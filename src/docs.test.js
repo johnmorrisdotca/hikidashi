@@ -35,7 +35,7 @@ const rows = (text) =>
 describe("the documents", () => {
   it("say the version package.json says, in the code and at the top of the changelog", () => {
     expect(VERSION).toBe(pkg.version);
-    expect(readFileSync("CHANGELOG.md", "utf8")).toMatch(new RegExp(`^## ${pkg.version.replace(/\./g, "\\.")} `, "m"));
+    expect(readFileSync("CHANGELOG.md", "utf8")).toMatch(new RegExp(`^## \\[${pkg.version.replace(/\./g, "\\.")}\\] `, "m"));
   });
 
   it("name in the README every entry package.json exports, and no other", () => {

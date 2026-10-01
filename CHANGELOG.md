@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.0.0 — 2026-10-01
+All notable changes to this project are written here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
+[Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+## [1.0.0] - 2026-10-01
 
 A drawer of small Japanese text tools, taken out of UmaKuma, a Japanese study app by the same author, so that other tools can use them. Each drawer is an entry of its own, and the package has no data and no dependencies.
 
