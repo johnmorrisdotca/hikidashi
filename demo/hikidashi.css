@@ -1,0 +1,45 @@
+/* Hikidashi's own look, after family.css: a panel for each drawer, its answer, and the call that made it. */
+:root { --intro-room: 14rem; --intro-room-wide: 7rem; }
+.drawers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 16px; align-items: start; }
+.drawer .fam-panel { gap: 12px; }
+.drawer h2 { font-size: 1.05rem; font-weight: 700; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.drawer h2 code { font-size: .8rem; font-weight: 600; color: var(--muted); }
+.drawer .blurb { color: var(--muted); font-size: .9rem; line-height: 1.5; max-width: 70ch; }
+.drawer .fam-row { align-items: center; }
+.drawer .fam-label { min-width: 4.2rem; }
+.drawer .fam-field { flex: 1 1 14rem; width: 0; min-width: 11rem; font-size: 1rem; }
+.drawer textarea.fam-field { width: 100%; flex-basis: 100%; min-height: 6rem; line-height: 1.5; }
+.drawer .fam-seg button { font-weight: 500; font-size: .85rem; }
+.answer { min-height: 9rem; border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px; background: color-mix(in srgb, var(--surface) 60%, var(--page)); overflow-wrap: anywhere; }
+.answer .note { margin: 0; font-size: .9rem; line-height: 1.5; }
+.facts { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; align-items: baseline; font-size: .95rem; }
+.facts dt { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.facts dt:empty { display: none; }
+.facts dt:empty + dd { grid-column: 1 / -1; font-weight: 500; color: var(--muted); font-size: .85rem; }
+.chips { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.chips .fam-chip { min-height: 36px; font-weight: 600; }
+.chips .sub { font-size: .7rem; font-weight: 500; opacity: .7; }
+.chips .fam-chip[data-tone="bad"] { border-color: var(--bad); color: var(--bad); }
+.segments { display: flex; flex-wrap: wrap; gap: 8px; }
+.segment { display: grid; justify-items: center; gap: 2px; border: 1px solid var(--rule); border-radius: 10px; padding: 8px 12px; background: var(--surface); min-width: 4.4rem; }
+.segment b { font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
+.segment .kind { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.segment[data-kind="okurigana"] { border-style: dashed; }
+.segment[data-kind="kana"] b { font-weight: 400; color: var(--muted); }
+.call { font-size: .8rem; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; min-height: 4.4rem; }
+.pair { display: flex; flex: 1 1 14rem; align-items: center; gap: 8px 12px; min-width: 0; }
+.pair .fam-label { min-width: 0; }
+.pair .fam-field { flex: 1 1 auto; }
+.uses { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.uses code { font-family: var(--mono); font-size: .85rem; overflow-wrap: anywhere; }
+.more .uses { grid-template-columns: 1fr; }
+.dictionary { margin-top: 28px; }
+.dictionary p { margin: 0 0 6px; color: var(--muted); font-size: .9rem; max-width: 70ch; }
+@media (max-width: 520px) {
+  .drawer .fam-label { min-width: 100%; }
+  .pair { flex-wrap: wrap; flex-basis: 100%; }
+  .drawer .fam-field { flex-basis: 100%; }
+  .facts { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .facts dd { margin-bottom: 8px; }
+}

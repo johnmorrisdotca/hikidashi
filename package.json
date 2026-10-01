@@ -1,0 +1,134 @@
+{
+  "name": "@johnmorrisdotca/hikidashi",
+  "version": "1.0.0",
+  "description": "Hikidashi 引き出し, a drawer of small Japanese text tools for JavaScript and TypeScript: era dates (和暦, 令和6年 to 2024 and back, with 元年), kanji numerals both ways (一億二千万 to 120000000, read aloud, formal 壱万), the dictionary forms a conjugated verb or adjective could come from, a word's reading shared out over its kanji (かん字テスト), Japanese words and kanji pulled out of pasted text, and sentence difficulty. Pure functions, no data, zero dependencies.",
+  "keywords": [
+    "japanese",
+    "nihongo",
+    "wareki",
+    "japanese-era",
+    "era",
+    "reiwa",
+    "heisei",
+    "showa",
+    "gannen",
+    "kanji",
+    "kanji-numerals",
+    "japanese-numbers",
+    "numerals",
+    "daiji",
+    "deinflect",
+    "deconjugate",
+    "conjugation",
+    "verb",
+    "lemmatizer",
+    "okurigana",
+    "furigana",
+    "reading",
+    "kanji-test",
+    "worksheet",
+    "text-extraction",
+    "vocabulary",
+    "sentence-difficulty",
+    "language-learning",
+    "jlpt",
+    "typescript",
+    "javascript",
+    "zero-dependencies",
+    "esm",
+    "browser",
+    "node",
+    "itsutsu"
+  ],
+  "homepage": "https://johnmorrisdotca.github.io/hikidashi/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnmorrisdotca/hikidashi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnmorrisdotca/hikidashi/issues"
+  },
+  "author": {
+    "name": "John Morris",
+    "email": "john@johnmorris.ca",
+    "url": "https://johnmorris.ca"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./wareki": {
+      "types": "./dist/wareki.d.ts",
+      "import": "./dist/wareki.js",
+      "default": "./dist/wareki.js"
+    },
+    "./numerals": {
+      "types": "./dist/numerals.d.ts",
+      "import": "./dist/numerals.js",
+      "default": "./dist/numerals.js"
+    },
+    "./deinflect": {
+      "types": "./dist/deinflect.d.ts",
+      "import": "./dist/deinflect.js",
+      "default": "./dist/deinflect.js"
+    },
+    "./align": {
+      "types": "./dist/align.d.ts",
+      "import": "./dist/align.js",
+      "default": "./dist/align.js"
+    },
+    "./extract": {
+      "types": "./dist/extract.d.ts",
+      "import": "./dist/extract.js",
+      "default": "./dist/extract.js"
+    },
+    "./difficulty": {
+      "types": "./dist/difficulty.d.ts",
+      "import": "./dist/difficulty.js",
+      "default": "./dist/difficulty.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "NOTICE.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.check.json",
+    "test": "vitest run",
+    "test:package": "pnpm build && node scripts/check-package.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "prepublishOnly": "pnpm check && pnpm build",
+    "site": "pnpm build && node scripts/site.mjs",
+    "test:demo": "pnpm site && playwright test",
+    "pictures": "pnpm site && node scripts/readme-pictures.mjs",
+    "docs:make": "node scripts/docs.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.63.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.11.0"
+}
