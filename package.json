@@ -1,7 +1,7 @@
 {
   "name": "@johnmorrisdotca/hikidashi",
-  "version": "1.0.0",
-  "description": "Hikidashi 引き出し, a drawer of small Japanese text tools for JavaScript and TypeScript: era dates (和暦, 令和6年 to 2024 and back, with 元年), kanji numerals both ways (一億二千万 to 120000000, read aloud, formal 壱万), the dictionary forms a conjugated verb or adjective could come from, a word's reading shared out over its kanji (かん字テスト), Japanese words and kanji pulled out of pasted text, and sentence difficulty. Pure functions, no data, zero dependencies.",
+  "version": "1.0.1",
+  "description": "Hikidashi 引き出し, a drawer of small Japanese text tools: era dates, kanji numerals both ways, dictionary forms of conjugated words, readings shared over kanji, words pulled from pasted text, and sentence difficulty. Zero dependencies.",
   "keywords": [
     "japanese",
     "nihongo",
@@ -48,11 +48,7 @@
   "bugs": {
     "url": "https://github.com/johnmorrisdotca/hikidashi/issues"
   },
-  "author": {
-    "name": "John Morris",
-    "email": "john@johnmorris.ca",
-    "url": "https://johnmorris.ca"
-  },
+  "author": "John Morris",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
