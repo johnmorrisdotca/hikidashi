@@ -76,24 +76,3 @@ The Release workflow (`.github/workflows/release.yml`) checks and builds the
 package, attaches the tarball to a GitHub release and publishes it to npm by
 trusted publishing, with provenance and no token. A version already on npm is
 not published again.
-
-## Particular to Hikidashi
-
-Bug reports and ideas go in the [issues](https://github.com/johnmorrisdotca/hikidashi/issues).
-
-### Commands and rules
-
-```sh
-pnpm check          # lint, types and tests
-pnpm test:package   # pack it as npm does, install it in an empty project, import every entry
-pnpm test:demo      # build the demo and play it in a real browser
-pnpm docs:make      # rewrite docs/strings-ja.md after changing a word of the demo
-```
-
-A change to what a function answers is a change to every page that asks it: add the case to its test first, and
-say in `CHANGELOG.md` which answers move. A new answer to something that was `null` is a minor version; a different
-answer to something that was answered is a major one.
-
-The drawers carry no data. A dictionary, a grade table or a word list belongs in the page that uses the package, passed
-in as an argument. Anything in `demo/` that looks like data is there to show a function working, and is credited in
-`NOTICE.md`.
