@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/hikidashi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Hikidashi 引き出し, a drawer of small Japanese text tools: era dates, kanji numerals both ways, dictionary forms of conjugated words, readings shared over kanji, words pulled from pasted text, and sentence difficulty. Zero dependencies.",
   "keywords": [
     "japanese",
@@ -113,7 +113,8 @@
     "prepublishOnly": "pnpm check && pnpm build",
     "site": "pnpm build && node scripts/site.mjs",
     "test:demo": "pnpm site && playwright test",
-    "pictures": "pnpm site && node scripts/readme-pictures.mjs",
+    "screenshots:readme": "pnpm site && node scripts/readme-pictures.mjs",
+    "test:readme": "pnpm build && node scripts/check-readme-examples.mjs",
     "docs:make": "node scripts/docs.mjs"
   },
   "devDependencies": {

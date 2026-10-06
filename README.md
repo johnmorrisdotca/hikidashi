@@ -8,14 +8,29 @@ Era dates (和暦) and kanji numerals both ways, the dictionary forms a conjugat
   <a href="https://www.npmjs.com/package/@johnmorrisdotca/hikidashi"><img alt="npm" src="https://img.shields.io/npm/v/@johnmorrisdotca/hikidashi?color=2f5d4a"></a>
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-2f5d4a"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-0-2f5d4a">
+  <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
 </p>
 
 <p align="center"><a href="https://johnmorrisdotca.github.io/hikidashi/"><strong>Try the drawers →</strong></a> · <a href="https://johnmorrisdotca.github.io/hikidashi/api.html">API reference</a></p>
 
-<p align="center">
-  <img src="docs/desktop.jpg" alt="The demo on a desk, in English: the header with its language chooser, the API reference link, five cloth patches and the Help switch, then panels in two columns, each with a box to type in, a row of examples, the answer and the call that made it. Era years shows 令和6年 worked out as 2024, Kanji numerals shows 2万5千 as 25,000, 二万五千, the formal 弐万五千 and にまんごせん, and under them Dictionary forms and Reading alignment, which shares 食べる over 食 (た) and べる" width="620">
-  <img src="docs/phone.jpg" alt="The demo on a phone in dark mode and in Japanese: the header and its language chooser and patches, then the first panel for era years with 令和6年 typed in, its examples, and the start of its answer: 西暦 2024 and 和暦 令和6年" width="200">
-</p>
+<table align="center">
+<tr>
+<td align="center" valign="top">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-desk-light.webp" alt="The demo on a desk, in English: the header with its language chooser, the API reference link, five cloth patches and the Help switch, then panels in two columns, each with a box to type in, a row of examples and the answer with the call that made it: Era years showing 令和6年 worked out as 2024, Kanji numerals showing 2万5千 as 25,000 and 二万五千, and under them Dictionary forms and Reading alignment" width="600">
+</picture>
+<br><em>The demo on a desk: four of the six drawers, each answering the example in its box.</em>
+</td>
+<td align="center" valign="top">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-phone-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-phone-light.webp" alt="The demo on a phone, in Japanese: the header and its language chooser and patches, then the first panel for era years, 元号の年, with 令和6年 typed in, its examples, and the start of its answer, 西暦 2024 and 和暦 令和6年" width="190">
+</picture>
+<br><em>On a phone, in Japanese, in the device's light or dark.</em>
+</td>
+</tr>
+</table>
 
 Hikidashi is the handful of Japanese-text helpers a study tool, a worksheet maker or a reading aid ends up writing for itself, taken out and tested once: what year is 平成3年, how is 一億二千万 written in digits, which verb is 食べませんでした, how does たべる divide over 食べる. It is a drawer of them, each small and each its own import, so a page that wants one era converter does not carry the rest. It was taken out of UmaKuma, a Japanese study app by the same author, and it works in [the demo](https://johnmorrisdotca.github.io/hikidashi/) with nothing to install.
 
@@ -61,13 +76,79 @@ eraOnDate("1989-01-07");   // 昭和64: the next day, 1989-01-08, is 平成1
 - **No data and no dependencies.** No dictionary, no word list, no grade table and no network request. Every function is pure and returns new values.
 - **English and Japanese demo**, with a Help switch that explains each option.
 
+### What's in it
+
+Each picture is the real drawer, a panel of [the demo](https://johnmorrisdotca.github.io/hikidashi/) taken with `pnpm screenshots:readme`, in light and dark. The panel shows the answer and, under it, the call that made it.
+
+<table>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/wareki-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/wareki-desk-light.webp" alt="The Era years panel of the demo on a desk: the title Era years with its import /wareki, a box holding 令和6年, a row of examples, and the answer: Western year 2024, era year 令和6年 and Reiwa 6, the reading れいわ, the era began 2019-05-01 and is still running, with the call parseEraYear(&quot;令和6年&quot;) // 2024 under it" width="400">
+</picture>
+<br><em><strong>Era years.</strong> 令和6年 is 2024, and the panel says when the era began and that it is still running.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/numerals-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/numerals-desk-light.webp" alt="The Kanji numerals panel of the demo on a desk: a box holding 2万5千, a row of examples, and the answer: value 25,000, kanji 二万五千, formal 弐万五千 and said as にまんごせん, with the call parseJapaneseNumber(&quot;2万5千&quot;) // 25000 under it" width="400">
+</picture>
+<br><em><strong>Kanji numerals.</strong> 2万5千 is 25,000, written in kanji, in the formal characters, and said aloud.</em>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/deinflect-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/deinflect-desk-light.webp" alt="The Dictionary forms panel of the demo on a desk: a box holding 行きました, a row of examples, and the list of dictionary forms it could come from, each with the kind of word it would have to be: 行く godan verb, 行きる ichidan verb, 行きます godan verb, 行きまする suru verb and 行きまし ichidan verb, with the call dictionaryForms(&quot;行きました&quot;) under it" width="400">
+</picture>
+<br><em><strong>Dictionary forms.</strong> Every form 行きました could come from, likeliest first; your own dictionary says which is real.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/align-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/align-desk-light.webp" alt="The Reading alignment panel of the demo on a desk: boxes holding the word 食べる and its reading たべる, a row of examples, and the word cut into two cards, 食 with the reading た marked kanji and べる with the reading べる marked okurigana, with the call segmentWord(&quot;食べる&quot;, &quot;たべる&quot;) under it" width="400">
+</picture>
+<br><em><strong>Reading alignment.</strong> 食べる read たべる: 食 takes た and べる is the okurigana.</em>
+</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/extract-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/extract-desk-light.webp" alt="The Pasted text panel of the demo on a desk: a text box with two Japanese sentences, a row of examples, the words found (先生, 学校, 行く, 毎日, 日本語, 勉強する) and the eleven different kanji found, the counts 25 characters, 6 words, 11 kanji, and the call extractFromText({ text, known }) under it" width="400">
+</picture>
+<br><em><strong>Pasted text.</strong> The words the demo's small dictionary knows, in dictionary form, and every kanji.</em>
+</td>
+<td align="center" valign="top" width="50%">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/difficulty-desk-dark.webp">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/difficulty-desk-light.webp" alt="The Sentence difficulty panel of the demo on a desk: a box holding 水を飲む。, a row of example sentences, and the answer: score 14, length 5, hardest kanji 飲 (cost 3) and the kanji 水 with 1 and 飲 with 3, with the call sentenceDifficulty(&quot;水を飲む。&quot;, costs) under it" width="400">
+</picture>
+<br><em><strong>Sentence difficulty.</strong> Five characters plus three times the hardest kanji's cost of 3 makes 14.</em>
+</td>
+</tr>
+</table>
+
 ## Use it in your project
+
+### Install
+
+```sh
+npm install @johnmorrisdotca/hikidashi
+# or: pnpm add @johnmorrisdotca/hikidashi
+# or: yarn add @johnmorrisdotca/hikidashi
+```
+
+It is ES modules only, with its types included and `sideEffects: false`, and needs Node 22 or later outside a browser (on Node 22.12 or later it loads by `require` too). A page with no bundler imports a drawer from a CDN (`@1` is the major version).
 
 ### 1. A drawer on a server or in an app
 
 ```ts
 import { parseJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
 
+const form = { amount: "2万5千" };
 parseJapaneseNumber(form.amount);   // a number, or null when it is not one
 ```
 
@@ -88,6 +169,242 @@ Each drawer is an entry of its own (`/wareki`, `/numerals`, `/deinflect`, `/alig
 - **Refusal rather than a guess.** A text that is not a number, a year an era never had, a reading that does not fit its word: each gives `null` or an empty list, never a plausible wrong answer.
 - **No dependencies.** One entry for each drawer.
 - **Where it runs.** See [Browser and runtime support](#browser-and-runtime-support).
+
+### In a framework
+
+The drawers are plain functions, so a framework needs no adapter: call one where you would compute a value. Each of these is an era-year box that answers as you type.
+
+#### React
+
+```jsx
+import { useState } from "react";
+import { parseEraYear } from "@johnmorrisdotca/hikidashi/wareki";
+
+export function EraYear() {
+  const [text, setText] = useState("令和6年");
+  const year = parseEraYear(text);
+  return (
+    <label>
+      年 <input value={text} lang="ja" onChange={(event) => setText(event.target.value)} />
+      <output>{year ? `西暦${year.westernYear}年` : "年号の年を入れてください"}</output>
+    </label>
+  );
+}
+```
+
+#### Vue
+
+```vue
+<script setup>
+import { computed, ref } from "vue";
+import { parseEraYear } from "@johnmorrisdotca/hikidashi/wareki";
+
+const text = ref("令和6年");
+const year = computed(() => parseEraYear(text.value));
+</script>
+
+<template>
+  <label>年 <input v-model="text" lang="ja" /></label>
+  <output>{{ year ? `西暦${year.westernYear}年` : "年号の年を入れてください" }}</output>
+</template>
+```
+
+#### Svelte
+
+```svelte
+<script>
+  import { parseEraYear } from "@johnmorrisdotca/hikidashi/wareki";
+
+  let text = "令和6年";
+  $: year = parseEraYear(text);
+</script>
+
+<label>年 <input bind:value={text} lang="ja" /></label>
+<output>{year ? `西暦${year.westernYear}年` : "年号の年を入れてください"}</output>
+```
+
+#### Angular
+
+```ts no-check
+import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { parseEraYear } from "@johnmorrisdotca/hikidashi/wareki";
+
+@Component({
+  selector: "era-year",
+  standalone: true,
+  imports: [FormsModule],
+  template: `<label>年 <input [(ngModel)]="text" lang="ja" /></label><output>{{ answer() }}</output>`,
+})
+export class EraYearComponent {
+  text = "令和6年";
+  answer() {
+    const year = parseEraYear(this.text);
+    return year ? `西暦${year.westernYear}年` : "年号の年を入れてください";
+  }
+}
+```
+
+## Examples
+
+Each example is a whole recipe: copy it and it works. They are run in CI against the built package (`pnpm test:readme`), so none of them is a guess, and the output shown is what they print.
+
+### A form that turns an era year into a Western one
+
+A page with no bundler: one drawer, from a CDN (`@1` is the major version), and a box that answers as you type. Save it as a file and open it.
+
+```html
+<!doctype html>
+<meta charset="utf-8">
+<title>和暦 to 西暦</title>
+<label>年 <input id="year" value="令和6年" lang="ja" autocomplete="off"></label>
+<p id="answer" role="status"></p>
+<script type="module">
+  import { parseEraYear } from "https://cdn.jsdelivr.net/npm/@johnmorrisdotca/hikidashi@1/dist/wareki.js";
+
+  const input = document.getElementById("year");
+  const show = () => {
+    const year = parseEraYear(input.value);
+    document.getElementById("answer").textContent = year ? `西暦${year.westernYear}年` : "年号の年を入れてください";   // null when it is not an era year
+  };
+  input.addEventListener("input", show);
+  show();
+</script>
+```
+
+### Era years, both ways
+
+An era changes partway through a Western year, so a year may belong to two eras, and a day to one. A year an era never had is `null`, never a guess.
+
+```ts
+import { eraOnDate, eraYearOf, eraYearsOf, formatEraYearJapanese, parseEraYear } from "@johnmorrisdotca/hikidashi/wareki";
+
+console.log(parseEraYear("Heisei 3")?.westernYear, parseEraYear("令和元年")?.westernYear, parseEraYear("昭和65年"));
+console.log(eraYearsOf(1989).map((one) => `${one.era.kanji}${one.year}`));
+console.log(eraOnDate("1989-01-07")?.era.kanji, eraOnDate("1989-01-08")?.era.kanji);
+console.log(formatEraYearJapanese(eraYearOf(2019)!, { gannen: true }));
+```
+
+```text
+1991 2019 null
+[ '平成1', '昭和64' ]
+昭和 平成
+令和元年
+```
+
+### Kanji numerals, both ways
+
+A number written in kanji, in digits or in a mixture becomes a number, and a number becomes kanji, in the formal characters a contract uses, and in the reading aloud with its sound changes.
+
+```ts
+import { parseEnglishNumber, parseJapaneseNumber, readJapaneseNumber, writeJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
+
+console.log(parseJapaneseNumber("1億2000万"), parseJapaneseNumber("2万5千"), parseJapaneseNumber("一二三"));
+console.log(writeJapaneseNumber(120_000_000), writeJapaneseNumber(10_000, { formal: true }));
+console.log(readJapaneseNumber(300), readJapaneseNumber(800), parseEnglishNumber("5 man"));
+```
+
+```text
+120000000 25000 null
+一億二千万 壱万
+さんびゃく はっぴゃく 50000
+```
+
+### Which verb is this?
+
+A sentence writes 食べませんでした where a dictionary lists 食べる. `dictionaryForms` proposes every dictionary form it could come from, and the caller keeps only the ones its own dictionary confirms, with `wordClassesOf` to compare the kind of word.
+
+```ts
+import { dictionaryForms, wordClassesOf } from "@johnmorrisdotca/hikidashi/deinflect";
+
+const proposals = dictionaryForms("食べませんでした");
+console.log(proposals.slice(0, 2));
+
+// Your own dictionary says what each word is: here, JMdict's tags for 食べる.
+const confirmed = proposals.filter((proposal) => wordClassesOf("食べる", ["v1", "vt"]).includes(proposal.wordClass) && proposal.base === "食べる");
+console.log(confirmed);
+```
+
+```text
+[
+  { base: '食べる', wordClass: 'ichidan' },
+  { base: '食ぶ', wordClass: 'godan' }
+]
+[ { base: '食べる', wordClass: 'ichidan' } ]
+```
+
+### A reading divided over its kanji, and a test made from it
+
+`segmentWord` cuts a word and its reading into kanji, kana and okurigana, each kanji with its share of the reading, the way a school's かん字テスト writes them. `buildKanjiTest` makes the test from a list, the same test for the same seed.
+
+```ts
+import { buildKanjiTest, kanjiAsWord, segmentWord } from "@johnmorrisdotca/hikidashi/align";
+
+console.log(segmentWord("形が合う", "かたちがあう")?.map((part) => `${part.text}:${part.reading}:${part.kind}`));
+console.log(segmentWord("食べる", "たべる")?.map((part) => `${part.text}:${part.reading}`));
+console.log(segmentWord("食べる", "のむ"));                        // a reading that does not fit: null, never a wrong answer
+
+const words = ["食べる", "水", "学校", "形が合う"]
+  .map((word, at) => ({ word, reading: ["たべる", "みず", "がっこう", "かたちがあう"][at]! }));
+const test = buildKanjiTest(words, { seed: 7, count: 3 });
+console.log(Object.keys(test), test.writing.length, test.reading.length);
+console.log(kanjiAsWord("食", ["た.べる"], ["ショク"]));       // a kanji and its dictionary readings become a word to ask
+```
+
+```text
+[ '形:かたち:kanji', 'が:が:kana', '合:あ:kanji', 'う:う:okurigana' ]
+[ '食:た', 'べる:べる' ]
+null
+[ 'writing', 'reading' ] 3 3
+{ word: '食べる', reading: 'たべる' }
+```
+
+### Words and kanji out of pasted text
+
+Somebody pastes a page of a book. The text is cut to a length, stripped of control characters, matched longest first against a dictionary that the caller holds, and what comes back is words in dictionary form and the kanji.
+
+```ts
+import type { WordClass } from "@johnmorrisdotca/hikidashi/deinflect";
+import { extractFromText, wordCandidates } from "@johnmorrisdotca/hikidashi/extract";
+
+const known = new Map<string, WordClass[]>([["先生", []], ["学校", []], ["行く", ["godan"]]]);
+const found = extractFromText({ text: "先生と学校へ行きます", known });
+console.log(found.words, found.kanji.join(""));
+console.log(found.stats);
+console.log(wordCandidates("先生と学校").length > 5);   // every substring a dictionary might know: one question to the database
+```
+
+```text
+[ '先生', '学校', '行く' ] 先生学校行
+{ characters: 10, truncated: false, kanji: 5, words: 3 }
+true
+```
+
+### Put the easiest example sentence first
+
+A sentence is as hard as it is long, and as its hardest kanji. You give the costs, from the grades or frequencies you hold; the package gives the score.
+
+```ts
+import { kanjiCost, sentenceDifficulty } from "@johnmorrisdotca/hikidashi/difficulty";
+
+const costs = new Map([
+  ["水", kanjiCost({ grade: 1, frequencyRank: 223 })],
+  ["飲", kanjiCost({ grade: 3, frequencyRank: 969 })],
+  ["毎", kanjiCost({ grade: 2, frequencyRank: null })],
+  ["日", kanjiCost({ grade: 1, frequencyRank: null })],
+]);
+const sentences = ["水を飲む。", "みずをのむ。", "毎日、水を飲む。"];
+const ranked = sentences.map((sentence) => ({ sentence, score: sentenceDifficulty(sentence, costs) })).sort((a, b) => a.score - b.score);
+console.log(ranked);
+```
+
+```text
+[
+  { sentence: 'みずをのむ。', score: 6 },
+  { sentence: '水を飲む。', score: 14 },
+  { sentence: '毎日、水を飲む。', score: 17 }
+]
+```
 
 ## The drawers
 
@@ -149,6 +466,7 @@ import { buildKanjiTest, segmentWord } from "@johnmorrisdotca/hikidashi/align";
 segmentWord("形が合う", "かたちがあう");
 // [{ text: "形", kind: "kanji", reading: "かたち" }, { text: "が", kind: "kana", reading: "が" },
 //  { text: "合", kind: "kanji", reading: "あ" }, { text: "う", kind: "okurigana", reading: "う" }]
+const words = [{ word: "食べる", reading: "たべる" }, { word: "水", reading: "みず" }];
 buildKanjiTest(words, { seed: 7, count: 12 });   // { writing: [...], reading: [...] }, the same test for the same seed
 ```
 
@@ -157,9 +475,10 @@ A Japanese school's かん字テスト shows a reading beside empty squares and 
 ### Pasted text: `/extract`
 
 ```ts
+import type { WordClass } from "@johnmorrisdotca/hikidashi/deinflect";
 import { extractFromText, wordCandidates } from "@johnmorrisdotca/hikidashi/extract";
 
-const known = new Map([["先生", []], ["学校", []], ["行く", ["godan"]]]);
+const known = new Map<string, WordClass[]>([["先生", []], ["学校", []], ["行く", ["godan"]]]);
 extractFromText({ text: "先生と学校へ行きます", known });
 // { words: ["先生", "学校", "行く"], kanji: ["先", "生", "学", "校", "行"], stats: { characters: 10, … } }
 ```
@@ -193,6 +512,10 @@ The [API reference](https://johnmorrisdotca.github.io/hikidashi/api.html) lists 
 
 Every function is pure: it returns new values and never changes what it was given. Anything that is not text where text is expected is refused, not thrown at.
 
+## Theming
+
+None, on purpose: Hikidashi makes no colours, no markup and no styles, so there is nothing of its own to theme, and a page built on it looks however the page looks. The demo is the worked example: its panels are drawn by [`demo/demo.js`](./demo/demo.js) and [`demo/hikidashi.css`](./demo/hikidashi.css), over the family's shared stylesheet.
+
 ## Limits
 
 All of these are held by tests, and the ones with a name are exported.
@@ -210,13 +533,25 @@ All of these are held by tests, and the ones with a name are exported.
 
 The matching is bounded, not exponential: a word of repeated kana that no reading fits is refused in no time, and a paste of the longest length is read in a moment.
 
-## Languages
+## Accessibility
 
-The functions answer in kanji, kana and numbers, so they have no words of their own to translate. The demo is in English and Japanese, chosen by its own chooser, taking the browser's language on a first visit. **Japanese: included; not yet reviewed by a native reader. Corrections welcome.** Every line of the demo is listed beside its English in [docs/strings-ja.md](./docs/strings-ja.md), and there is an [issue template](https://github.com/johnmorrisdotca/hikidashi/issues/new?template=fix-a-translation.md) for fixing one.
+Hikidashi draws nothing: its functions take text and give back text, numbers and lists, so what it can do for accessibility is give a page results a screen reader can say. The demo is the worked example of a page built on them.
+
+- **Results that can be spoken.** `readJapaneseNumber` gives a number as hiragana with the sound changes (さんびゃく), `formatEraYearJapanese` gives an era year as written (令和元年), and `segmentWord` gives each kanji its reading, so a page can put the reading next to a kanji for a learner who hears the page and cannot see the character.
+- **Nothing depends on colour or sound.** The package makes no colours and no sounds. A function that cannot answer says so with `null` or an empty list, never with a plausible wrong answer, so a page can say plainly that it could not read what was typed.
+- **In the demo, every panel is a labelled region.** Each is a `section` named by its heading, each box has a `label`, and the answer is an `aria-live="polite"` region, so what a person types is answered without moving focus. The boxes are marked `lang="ja"`, so a screen reader reads what is typed in Japanese.
+- **The examples are real buttons**, in a labelled group, with `aria-pressed` for the one in use; the language chooser and every button are at least 44 pixels square, with a visible focus ring, and the page fits a phone at 390 pixels.
+- **The keyboard.** The demo needs nothing but Tab, typing and Enter or Space on a button.
+- **Reduced motion.** Nothing in the package or the demo's panels moves.
+- **Not yet.** The demo's colours have not been measured against WCAG contrast ratios, and its Japanese has not been read by a native reader (see [Languages](#languages)).
 
 ## Browser and runtime support
 
 Nothing here touches the DOM, the network or the file system, so the package runs anywhere JavaScript does: Node 22 or later (CI tests 22 and 24, on Linux, macOS and Windows), and any browser with ES2020 modules and Unicode property escapes in regular expressions (`\p{Script=Han}`): Chrome and Edge 80, Safari 13.1, Firefox 78, all from 2020 on. The demo is played in a real Chromium at a phone's width (with touch) and a desk's, and in WebKit, Safari's engine, at a phone's width; Firefox is not in that run. Deno and Bun are not tested.
+
+## Languages
+
+The functions answer in kanji, kana and numbers, so they have no words of their own to translate. The demo is in English and Japanese, chosen by its own chooser, taking the browser's language on a first visit. **Japanese: included; not yet reviewed by a native reader. Corrections welcome.** Every line of the demo is listed beside its English in [docs/strings-ja.md](./docs/strings-ja.md), and there is an [issue template](https://github.com/johnmorrisdotca/hikidashi/issues/new?template=fix-a-translation.md) for fixing one.
 
 ## Roadmap
 
@@ -306,7 +641,8 @@ pnpm check          # lint, types and every test
 pnpm test:package   # pack, install and import it as somebody who installed it would
 pnpm test:demo      # build the demo and play it in a real browser, at a phone's width and a desk's
 pnpm site           # build the demo into site/, as the Pages workflow publishes it
-pnpm pictures       # take the README's two pictures from the built demo
+pnpm test:readme    # run every example in the README against the built package
+pnpm screenshots:readme   # take the README's pictures from the built demo, in light and dark
 pnpm docs:make      # rewrite docs/strings-ja.md after changing a word of the demo
 ```
 
@@ -318,8 +654,9 @@ Please follow the [code of conduct](./CODE_OF_CONDUCT.md). Text that makes a fun
 
 ## Changes
 
-See [CHANGELOG.md](./CHANGELOG.md).
+See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.0.2, adds no code: it is this README in full, with pictures of every drawer, examples that are run on every change, examples for React, Vue, Svelte and Angular, and an Accessibility section.
 
 ## Licence
 
 MIT, © John Morris. The package is code only and ships no data. The demo's one small table (the school grade of thirty-odd kanji, typed in to show `kanjiCost`) is credited in [NOTICE.md](./NOTICE.md), and is not part of the published package.
+
