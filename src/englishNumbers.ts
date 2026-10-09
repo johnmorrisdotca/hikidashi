@@ -56,6 +56,18 @@ const FILLER = new Set(["and", "a"]);
  * table does not hold makes the whole thing null rather than a partial
  * reading: "five cats" is not five, and answering as though it were would be
  * a confident wrong answer to a question nobody asked.
+ *
+ * @param text - A number in English words ("five hundred", "twenty-five", "1.2 million"), or with a Japanese
+ * magnitude in romaji ("5 man", "3 oku"); digits may stand for any part.
+ * @returns The value; null when any word is not a number word ("five cats"), when there is nothing to read, or when
+ * the value is past 9,007,199,254,740,991 either way.
+ * @example
+ * ```ts
+ * import { parseEnglishNumber } from "@johnmorrisdotca/hikidashi/numerals";
+ *
+ * console.log(parseEnglishNumber("five hundred"), parseEnglishNumber("twenty-five thousand"), parseEnglishNumber("5 man"));
+ * console.log(parseEnglishNumber("1.2 million"), parseEnglishNumber("five cats"));
+ * ```
  */
 export function parseEnglishNumber(text: string): number | null {
   const tokens = String(text ?? "")

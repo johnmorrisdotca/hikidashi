@@ -15,6 +15,7 @@
  * Whole numbers from 0 to 9,007,199,254,740,991 only: past that JavaScript stops counting exactly,
  * and a number the runtime cannot hold is worse than one that is not offered.
  */
+
 const DIGITS = ["〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"] as const;
 
 /**
@@ -45,11 +46,19 @@ const MYRIADS: Array<{ kanji: string; value: number }> = [
 ];
 
 /**
- * The largest number this module will answer for.
+ * The largest number this module will answer for: 9,007,199,254,740,991, JavaScript's largest safe integer.
  *
  * JavaScript stops counting exactly above it, and a number the runtime cannot
  * hold is worse than one that is not offered: it would answer, confidently,
  * with a value a digit or two out.
+ *
+ * @example
+ * ```ts
+ * import { LARGEST_JAPANESE_NUMBER, writeJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
+ *
+ * console.log(LARGEST_JAPANESE_NUMBER, writeJapaneseNumber(LARGEST_JAPANESE_NUMBER));
+ * console.log(writeJapaneseNumber(LARGEST_JAPANESE_NUMBER + 1));
+ * ```
  */
 export const LARGEST_JAPANESE_NUMBER = Number.MAX_SAFE_INTEGER;
 
@@ -73,8 +82,21 @@ function withoutThousandsCommas(text: string): string {
  *
  * The formal numerals are read too (壱万弐千, 萬), and so is a thousands comma. Units must descend:
  * 万億 is not a number anybody wrote on purpose, and reading it as one would put a confident wrong
- * answer on the page. Null for anything else, including a minus sign, a decimal point, a bare 万 and
- * a number past 9,007,199,254,740,991.
+ * answer on the page.
+ *
+ * @param text - A number in kanji (一億二千万), in digits (120000000, half-width or full-width, with a half-width thousands comma or none), or a mixture
+ * (1億2000万), formal numerals included (壱万).
+ * @returns The value; null for anything that is not a whole number written that way, including a minus sign, a
+ * decimal point, kanji digits side by side (一二三), units out of order (万億), a bare 万 and a number past
+ * 9,007,199,254,740,991. Null means "not a number I can read", never zero.
+ * @example
+ * ```ts
+ * import { parseJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
+ *
+ * console.log(parseJapaneseNumber("一億二千万"), parseJapaneseNumber("1億2000万"), parseJapaneseNumber("2万5千"));
+ * console.log(parseJapaneseNumber("壱万弐千"), parseJapaneseNumber("１２０００"), parseJapaneseNumber("12,000"));
+ * console.log(parseJapaneseNumber("一二三"), parseJapaneseNumber("万"), parseJapaneseNumber("-5"));
+ * ```
  */
 export function parseJapaneseNumber(text: string): number | null {
   const cleaned = withoutThousandsCommas(toHalfWidthDigits(String(text ?? "").trim()))
@@ -163,12 +185,23 @@ function writeBelowMyriad(value: number): string {
 }
 
 /**
- * The number as Japanese writes it, or null when it is out of range (negative, not a whole number,
- * or past 9,007,199,254,740,991).
+ * The number as Japanese writes it, in kanji.
  *
  * Grouped by myriads, so each group is a number below 10,000 followed by its unit: 120,000,000 comes
  * out 一億二千万 rather than as a run of digits. With `formal`, the figures that can be altered are
  * written in their formal characters, as on a contract or a banknote: 壱万 for 一万, 弐千 for 二千.
+ *
+ * @param value - A whole number from 0 to 9,007,199,254,740,991.
+ * @param options - `formal: true` writes 壱, 弐, 参, 拾 and 零 for 一, 二, 三, 十 and 〇.
+ * @returns The number in kanji; null when it is out of range: negative, not a whole number, or past
+ * 9,007,199,254,740,991.
+ * @example
+ * ```ts
+ * import { writeJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
+ *
+ * console.log(writeJapaneseNumber(120_000_000), writeJapaneseNumber(2024), writeJapaneseNumber(10));
+ * console.log(writeJapaneseNumber(12_000, { formal: true }), writeJapaneseNumber(-1), writeJapaneseNumber(1.5));
+ * ```
  */
 export function writeJapaneseNumber(value: number, options: { formal?: boolean } = {}): string | null {
   const written = writePlain(value);
@@ -242,7 +275,21 @@ function readBelowMyriad(value: number): string {
   return remaining > 0 ? `${out}${DIGIT_READINGS[remaining]}` : out;
 }
 
-/** The number said aloud, in hiragana, or null when it is out of range. */
+/**
+ * The number said aloud, in hiragana, with the sound changes a learner has to know: 300 is さんびゃく, 600
+ * ろっぴゃく, 800 はっぴゃく, 3,000 さんぜん, 8,000 はっせん, and 一兆 いっちょう. Zero is ゼロ.
+ *
+ * @param value - A whole number from 0 to 9,007,199,254,740,991.
+ * @returns The reading in hiragana; null when the number is out of range: negative, not a whole number, or past
+ * 9,007,199,254,740,991.
+ * @example
+ * ```ts
+ * import { readJapaneseNumber } from "@johnmorrisdotca/hikidashi/numerals";
+ *
+ * console.log(readJapaneseNumber(300), readJapaneseNumber(600), readJapaneseNumber(800), readJapaneseNumber(3000));
+ * console.log(readJapaneseNumber(25_000), readJapaneseNumber(0), readJapaneseNumber(-3));
+ * ```
+ */
 export function readJapaneseNumber(value: number): string | null {
   if (!Number.isInteger(value) || value < 0 || value > LARGEST_JAPANESE_NUMBER) return null;
   if (value === 0) return "ゼロ";

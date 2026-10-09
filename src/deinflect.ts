@@ -21,6 +21,19 @@
  * (which do not conjugate onto themselves).
  */
 
+/**
+ * The kinds of word a conjugated form can come from, each named by itself: `godan` and `ichidan` verbs, `iAdjective`,
+ * and the two irregular verbs `suru` (する) and `kuru` (来る). Compare a `WordClass` with these rather than with a
+ * string typed out.
+ *
+ * @example
+ * ```ts
+ * import { WORD_CLASSES, dictionaryForms } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * console.log(Object.values(WORD_CLASSES));
+ * console.log(dictionaryForms("高くて").filter((one) => one.wordClass === WORD_CLASSES.iAdjective));
+ * ```
+ */
 export const WORD_CLASSES = {
   godan: "godan",
   ichidan: "ichidan",
@@ -29,6 +42,17 @@ export const WORD_CLASSES = {
   kuru: "kuru",
 } as const;
 
+/**
+ * One kind of word: `"godan"`, `"ichidan"`, `"iAdjective"`, `"suru"` or `"kuru"`, the values of `WORD_CLASSES`.
+ *
+ * @example
+ * ```ts
+ * import { wordClassesOf, type WordClass } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * const classes: WordClass[] = wordClassesOf("食べる", ["v1", "vt"]);
+ * console.log(classes);
+ * ```
+ */
 export type WordClass = (typeof WORD_CLASSES)[keyof typeof WORD_CLASSES];
 
 /* A te-form waiting for its verb: 見ている is 見て + いる. */
@@ -37,7 +61,24 @@ type Tag = WordClass | typeof TE;
 
 type Rule = { from: string; to: string; gives: Tag; accepts: readonly Tag[]; afterKana?: true };
 
-export type Deinflection = { base: string; wordClass: WordClass };
+/**
+ * One answer of `dictionaryForms`: a dictionary form the written word could come from, and the kind of word it would
+ * have to be for that to be true.
+ *
+ * @example
+ * ```ts
+ * import { dictionaryForms, type Deinflection } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * const first: Deinflection | undefined = dictionaryForms("行きました")[0];
+ * console.log(first?.base, first?.wordClass);
+ * ```
+ */
+export type Deinflection = {
+  /** The dictionary form, as a dictionary lists it: 行く, 食べる, 高い. */
+  base: string;
+  /** The kind of word `base` must be for the written form to be its conjugation. */
+  wordClass: WordClass;
+};
 
 const { godan, ichidan, iAdjective, suru, kuru } = WORD_CLASSES;
 
@@ -175,7 +216,17 @@ for (const rule of RULES) {
   RULES_BY_LAST.set(last, [...(RULES_BY_LAST.get(last) ?? []), rule]);
 }
 
-/** The longest ending any rule strips, so a caller knows how far past a word to look. */
+/**
+ * The longest ending, in characters, that any rule strips, so a caller matching words in running text knows how far
+ * past a dictionary word to look for its conjugation.
+ *
+ * @example
+ * ```ts
+ * import { LONGEST_ENDING } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * console.log(LONGEST_ENDING);
+ * ```
+ */
 export const LONGEST_ENDING = Math.max(...RULES.map((rule) => Array.from(rule.from).length));
 
 /*
@@ -186,7 +237,20 @@ export const LONGEST_ENDING = Math.max(...RULES.map((rule) => Array.from(rule.fr
  */
 const STEM_ONLY_ENDINGS = ["ます", "ました", "ません", "ましょう", "まして", "たい", "なさい"] as const;
 
-/** Whether `following` opens with an ending that makes the word before it a verb stem. */
+/**
+ * Whether `following` opens with an ending that only a verb's stem takes (ます, ました, ません, ましょう, まして, たい,
+ * なさい), so that the word before it is being written as a stem. A noun is never followed by ます: 行き before ます is
+ * the verb 行く, and 行き before nothing is the noun "bound for".
+ *
+ * @param following - The text right after a word, as much of it as you have.
+ * @returns True when it opens with one of those endings; false otherwise, including for an empty string.
+ * @example
+ * ```ts
+ * import { followsAsVerbStem } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * console.log(followsAsVerbStem("ます。"), followsAsVerbStem("たいです"), followsAsVerbStem("の電車"), followsAsVerbStem(""));
+ * ```
+ */
 export function followsAsVerbStem(following: string): boolean {
   return STEM_ONLY_ENDINGS.some((ending) => following.startsWith(ending));
 }
@@ -203,8 +267,20 @@ type Step = { term: string; tag: Tag | null; outer: number };
  *
  * Likeliest first: the reading that accounts for more of the written ending
  * leads, so 食べました is 食べる (ました) before it is 食べます (した). A
- * caller that cannot check the kind of word, like the news reader's lookup,
- * tries them in this order.
+ * caller that cannot check the kind of word tries them in this order.
+ *
+ * @param written - A verb or adjective as a sentence writes it: 食べませんでした, 行きます, 高くて, 持ってきた.
+ * @returns Every dictionary form it could be a conjugation of, each with its kind of word, likeliest first; an empty
+ * list when no ending matches (a noun, or a word already in its dictionary form). Each is a proposal for your
+ * dictionary to confirm, not an answer.
+ * @example
+ * ```ts
+ * import { dictionaryForms } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * console.log(dictionaryForms("食べませんでした").slice(0, 2));
+ * console.log(dictionaryForms("行きました")[0], dictionaryForms("持ってきた")[0]);
+ * console.log(dictionaryForms("学校"));
+ * ```
  */
 export function dictionaryForms(written: string): Deinflection[] {
   const found = new Map<string, Deinflection & { outer: number; steps: number }>();
@@ -250,6 +326,18 @@ const LABELS: Record<WordClass, readonly RegExp[]> = {
  * `"suru verb"` or `"する verb"`), and JMdict's tags (`v5k`, `v1`, `adj-i`, `vs-i`, `vk`), in any case.
  * A dictionary that lists 来る only as "an intransitive verb" is covered: a verb whose spelling
  * ends in 来る or くる is a 来る verb.
+ *
+ * @param characters - The word as the dictionary spells it, such as 来る or 持ってくる.
+ * @param partsOfSpeech - The parts of speech the dictionary lists for it, in its own wording or as JMdict tags.
+ * @returns The kinds of word it is, in the order of `WORD_CLASSES`; an empty list when none of its parts of speech is
+ * a verb or adjective that conjugates here (a noun, a な adjective).
+ * @example
+ * ```ts
+ * import { wordClassesOf } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * console.log(wordClassesOf("行く", ["v5k-s", "vi"]), wordClassesOf("高い", ["adj-i"]), wordClassesOf("勉強", ["n", "vs-s"]));
+ * console.log(wordClassesOf("持ってくる", ["intransitive verb"]), wordClassesOf("静か", ["adj-na"]));
+ * ```
  */
 export function wordClassesOf(characters: string, partsOfSpeech: readonly string[]): WordClass[] {
   const parts = partsOfSpeech.map((part) => part.trim().toLowerCase());

@@ -13,7 +13,17 @@
  * both). The package carries no table of its own.
  */
 
-/** What a character costs, given what your dictionary knows about it. */
+/**
+ * What your dictionary knows about a kanji, which `kanjiCost` turns into a cost. KANJIDIC2 holds both fields.
+ *
+ * @example
+ * ```ts
+ * import { kanjiCost, type KanjiDifficultySource } from "@johnmorrisdotca/hikidashi/difficulty";
+ *
+ * const water: KanjiDifficultySource = { grade: 1, frequencyRank: 223 };
+ * console.log(kanjiCost(water));
+ * ```
+ */
 export type KanjiDifficultySource = {
   /** The school grade: 1 to 6 for elementary, 8 for the rest of the jōyō kanji, 9 and 10 for name kanji (KANJIDIC2's numbering). Null when ungraded. */
   grade: number | null;
@@ -21,7 +31,16 @@ export type KanjiDifficultySource = {
   frequencyRank: number | null;
 };
 
-/** A character nobody has graded and nobody counts as frequent. */
+/**
+ * What a kanji costs when nothing is known about it: 20, the most any kanji costs.
+ *
+ * @example
+ * ```ts
+ * import { UNKNOWN_KANJI_COST, kanjiCost } from "@johnmorrisdotca/hikidashi/difficulty";
+ *
+ * console.log(UNKNOWN_KANJI_COST, kanjiCost(null), kanjiCost({ grade: null, frequencyRank: null }));
+ * ```
+ */
 export const UNKNOWN_KANJI_COST = 20;
 /** The hardest kanji weighs this much more than a character of length. */
 const HARDEST_WEIGHT = 3;
@@ -34,6 +53,17 @@ const HARDEST_WEIGHT = 3;
  * learner meets late if at all. Ungraded characters fall back to how common they are, since a frequent
  * character is easier than a rare one whatever any curriculum says. A kanji nothing is known about
  * costs `UNKNOWN_KANJI_COST`, the most.
+ *
+ * @param entry - What you hold about the kanji; null or undefined when you hold nothing.
+ * @returns The cost: 1 to 6 for grades 1 to 6, 9 for grade 8, 14 for name kanji (9 and 10), 10 to 18 by frequency
+ * for an ungraded kanji, and 20 (`UNKNOWN_KANJI_COST`) when nothing is known.
+ * @example
+ * ```ts
+ * import { kanjiCost } from "@johnmorrisdotca/hikidashi/difficulty";
+ *
+ * console.log(kanjiCost({ grade: 3, frequencyRank: 969 }), kanjiCost({ grade: 8, frequencyRank: 1500 }));
+ * console.log(kanjiCost({ grade: null, frequencyRank: 2400 }), kanjiCost(undefined));
+ * ```
  */
 export function kanjiCost(entry: KanjiDifficultySource | null | undefined): number {
   if (!entry) return UNKNOWN_KANJI_COST;
@@ -44,7 +74,19 @@ export function kanjiCost(entry: KanjiDifficultySource | null | undefined): numb
   return UNKNOWN_KANJI_COST;
 }
 
-/** Every kanji in the text, once each, in the order they appear. Kana, punctuation and 々 are not kanji. */
+/**
+ * Every kanji in the text, once each, in the order they appear. Kana, punctuation and 々 are not kanji.
+ *
+ * @param text - Any text.
+ * @returns The distinct kanji (CJK Unified Ideographs and Extension A), first appearance first; an empty list when
+ * there are none.
+ * @example
+ * ```ts
+ * import { kanjiIn } from "@johnmorrisdotca/hikidashi/difficulty";
+ *
+ * console.log(kanjiIn("毎日、日本語を勉強する。"), kanjiIn("ひらがな"));
+ * ```
+ */
 export function kanjiIn(text: string): string[] {
   const seen = new Set<string>();
   for (const character of String(text ?? "")) {
@@ -58,6 +100,17 @@ export function kanjiIn(text: string): string[] {
  *
  * Kana-only sentences score their length alone, which puts them at the top where they belong: a
  * beginner can read every one of them. A kanji missing from `costs` counts as the hardest kind.
+ *
+ * @param text - The sentence.
+ * @param costs - Each kanji's cost, from `kanjiCost`, as a Map; a kanji not in it costs `UNKNOWN_KANJI_COST`.
+ * @returns The score: the number of characters plus three times the cost of the hardest kanji. Lower is easier.
+ * @example
+ * ```ts
+ * import { kanjiCost, sentenceDifficulty } from "@johnmorrisdotca/hikidashi/difficulty";
+ *
+ * const costs = new Map([["水", kanjiCost({ grade: 1, frequencyRank: 223 })], ["飲", kanjiCost({ grade: 3, frequencyRank: 969 })]]);
+ * console.log(sentenceDifficulty("みずをのむ。", costs), sentenceDifficulty("水を飲む。", costs), sentenceDifficulty("麒麟を見た。", costs));
+ * ```
  */
 export function sentenceDifficulty(text: string, costs: ReadonlyMap<string, number>): number {
   const characters = kanjiIn(text);

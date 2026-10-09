@@ -17,7 +17,18 @@ export { hiraganaToKatakana, katakanaToHiragana } from "./kana.ts";
 
 const HAN = /\p{Script=Han}/u;
 
-/** What a run of a word is: kanji with their part of the reading, kana inside the word, or the kana that end it. */
+/**
+ * What a run of a word is: kanji with their part of the reading, kana inside the word, or the kana that end it
+ * (okurigana). The `kind` of every `WordSegment` is one of these.
+ *
+ * @example
+ * ```ts
+ * import { SEGMENT_KINDS, segmentWord } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const parts = segmentWord("食べる", "たべる") ?? [];
+ * console.log(parts.filter((part) => part.kind === SEGMENT_KINDS.okurigana).map((part) => part.text));
+ * ```
+ */
 export const SEGMENT_KINDS = {
   /** Kanji, with the part of the reading they carry. */
   kanji: "kanji",
@@ -26,21 +37,95 @@ export const SEGMENT_KINDS = {
   /** Kana that end a word after its kanji: written in the brackets. */
   okurigana: "okurigana",
 } as const;
+/**
+ * One kind of run: `"kanji"`, `"kana"` or `"okurigana"`, the values of `SEGMENT_KINDS`.
+ *
+ * @example
+ * ```ts
+ * import { segmentWord, type SegmentKind } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const kinds: SegmentKind[] = (segmentWord("形が合う", "かたちがあう") ?? []).map((part) => part.kind);
+ * console.log(kinds);
+ * ```
+ */
 export type SegmentKind = (typeof SEGMENT_KINDS)[keyof typeof SEGMENT_KINDS];
 
-/** One run of a word, and its share of the reading in hiragana. */
-export type WordSegment = { text: string; kind: SegmentKind; reading: string };
+/**
+ * One run of a word, and its share of the reading in hiragana: what `segmentWord` cuts a word into.
+ *
+ * @example
+ * ```ts
+ * import { segmentWord, type WordSegment } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const first: WordSegment | undefined = segmentWord("食べる", "たべる")?.[0];
+ * console.log(first);
+ * ```
+ */
+export type WordSegment = {
+  /** The run as the word writes it: one or more kanji, or kana. */
+  text: string;
+  /** Kanji, kana inside the word, or okurigana at its end. */
+  kind: SegmentKind;
+  /** The run's share of the reading, in hiragana. */
+  reading: string;
+};
 
-/** A word and its reading in hiragana. */
-export type ReadWord = { word: string; reading: string };
+/**
+ * A word and its reading in hiragana: what `buildKanjiTest` takes a list of, and what `kanjiAsWord` makes.
+ *
+ * @example
+ * ```ts
+ * import { buildKanjiTest, type ReadWord } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const words: ReadWord[] = [{ word: "水", reading: "みず" }, { word: "食べる", reading: "たべる" }];
+ * console.log(buildKanjiTest(words, { seed: 1, count: 1 }).writing.map((question) => question.word));
+ * ```
+ */
+export type ReadWord = {
+  /** The word as it is written, with at least one kanji. */
+  word: string;
+  /** How it is read, in hiragana (katakana is read the same). */
+  reading: string;
+};
 
-/** One question of a test: the word, its reading, and the word cut into its segments. */
+/**
+ * One question of a test: the word, its reading, and the word cut into its segments, ready to be drawn as squares
+ * with the okurigana in brackets.
+ *
+ * @example
+ * ```ts
+ * import { buildKanjiTest, type KanjiTestQuestion } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const [question]: KanjiTestQuestion[] = buildKanjiTest([{ word: "食べる", reading: "たべる" }], { seed: 3, count: 1 }).writing;
+ * console.log(question?.reading, question?.segments.map((part) => `${part.text}(${part.kind})`).join(" "));
+ * ```
+ */
 export type KanjiTestQuestion = ReadWord & { segments: WordSegment[] };
 
-/** A test: words to write in kanji from their readings, then different words to read. */
+/**
+ * A test: words to write in kanji from their readings, then different words to read. Made by `buildKanjiTest`.
+ *
+ * @example
+ * ```ts
+ * import { buildKanjiTest, type KanjiTest } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const test: KanjiTest = buildKanjiTest([{ word: "水", reading: "みず" }, { word: "火", reading: "ひ" }], { seed: 9, count: 1 });
+ * console.log(test.writing.length, test.reading.length, test.writing[0]?.word !== test.reading[0]?.word);
+ * ```
+ */
 export type KanjiTest = { writing: KanjiTestQuestion[]; reading: KanjiTestQuestion[] };
 
-/** What `segmentWord` will work on: a longer word or reading is refused rather than searched. */
+/**
+ * What `segmentWord` will work on: a word of up to 64 characters and a reading of up to 256. A longer word or reading
+ * is refused (null) rather than searched.
+ *
+ * @example
+ * ```ts
+ * import { ALIGN_LIMITS, segmentWord } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * console.log(ALIGN_LIMITS, segmentWord("字".repeat(ALIGN_LIMITS.word + 1), "じ"));
+ * ```
+ */
 export const ALIGN_LIMITS = { word: 64, reading: 256 } as const;
 
 function runsOf(word: string): { text: string; han: boolean }[] {
@@ -91,9 +176,18 @@ function share(runs: readonly { text: string; han: boolean }[], reading: readonl
  * several kanji (絵日記, えにっき) is one segment, since a reading cannot be split between kanji without a
  * dictionary.
  *
- * Null when the reading does not fit the word, so that a test can leave the word out rather than mark a
- * wrong answer right. Also null for a word with no kanji, a reading with a space or control character in
- * it, and a word or reading longer than `ALIGN_LIMITS`.
+ * @param word - The word as it is written, such as 食べる or 形が合う.
+ * @param reading - Its reading in hiragana or katakana, such as たべる.
+ * @returns The word's runs left to right, each with its share of the reading; null when the reading does not fit the
+ * word (so that a test can leave the word out rather than mark a wrong answer right), and for a word with no kanji, a
+ * reading with a space or control character in it, or a word or reading longer than `ALIGN_LIMITS`.
+ * @example
+ * ```ts
+ * import { segmentWord } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * console.log(segmentWord("形が合う", "かたちがあう")?.map((part) => `${part.text}:${part.reading}:${part.kind}`));
+ * console.log(segmentWord("絵日記", "エニッキ"), segmentWord("食べる", "のむ"));
+ * ```
  */
 export function segmentWord(word: string, reading: string): WordSegment[] | null {
   const text = String(word ?? "");
@@ -117,7 +211,19 @@ export function segmentWord(word: string, reading: string): WordSegment[] | null
  * A dictionary marks okurigana with a dot - た.べる for 食 - so 食 becomes 食べる read たべる, the question
  * a worksheet would ask. A reading without one is the kanji's own word (牛, うし), and a kanji with no
  * kun reading is asked by its on reading (門, もん). Prefix and suffix forms (-び) are passed over.
- * Null for a kanji with neither reading.
+ *
+ * @param kanji - One kanji.
+ * @param kun - Its kun readings as a dictionary lists them, okurigana after a dot (た.べる) and prefix or suffix forms
+ * with a hyphen.
+ * @param on - Its on readings, in katakana or hiragana.
+ * @returns The word to ask and its reading in hiragana; null for a kanji with neither a kun nor an on reading.
+ * @example
+ * ```ts
+ * import { kanjiAsWord } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * console.log(kanjiAsWord("食", ["た.べる", "く.う"], ["ショク"]), kanjiAsWord("牛", ["うし"], ["ギュウ"]));
+ * console.log(kanjiAsWord("門", [], ["モン"]), kanjiAsWord("〆", [], []));
+ * ```
  */
 export function kanjiAsWord(kanji: string, kun: readonly string[], on: readonly string[]): ReadWord | null {
   const whole = kun.find((value) => !value.startsWith("-") && !value.endsWith("-")) ?? kun[0];
@@ -157,7 +263,25 @@ function shuffled<T>(items: readonly T[], seed: number): T[] {
  * The seed decides which words and in what order, so the test on paper is the test that was on screen
  * and a link sent to somebody is the same test. Each word is asked once, and a word whose reading does
  * not fit it (`segmentWord` says null) is left out. A list too short for two halves of different words
- * asks its words both ways rather than leave the second half short. A `count` below one asks nothing.
+ * asks its words both ways rather than leave the second half short.
+ *
+ * @param pool - The words to draw from, each with its reading.
+ * @param options - `seed` decides which words and in what order; `count` is how many questions each half has (below
+ * one asks nothing).
+ * @returns The writing half and the reading half, each up to `count` questions; both empty when no word of the pool
+ * fits its reading.
+ * @example
+ * ```ts
+ * import { buildKanjiTest } from "@johnmorrisdotca/hikidashi/align";
+ *
+ * const pool = [
+ *   { word: "食べる", reading: "たべる" }, { word: "水", reading: "みず" },
+ *   { word: "学校", reading: "がっこう" }, { word: "形が合う", reading: "かたちがあう" },
+ * ];
+ * const test = buildKanjiTest(pool, { seed: 7, count: 2 });
+ * console.log(test.writing.map((one) => one.word), test.reading.map((one) => one.word));
+ * console.log(JSON.stringify(buildKanjiTest(pool, { seed: 7, count: 2 })) === JSON.stringify(test));
+ * ```
  */
 export function buildKanjiTest(pool: readonly ReadWord[], { seed, count }: { seed: number; count: number }): KanjiTest {
   const seen = new Set<string>();

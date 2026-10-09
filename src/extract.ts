@@ -18,7 +18,18 @@
  */
 import { LONGEST_ENDING, dictionaryForms, followsAsVerbStem, type WordClass } from "./deinflect.ts";
 
-/** What a paste is held to. */
+/**
+ * What a paste is held to: read to 20,000 characters and then cut, words of up to 8 characters, and at most 4,000
+ * candidates asked of a dictionary.
+ *
+ * @example
+ * ```ts
+ * import { EXTRACT_LIMITS, sanitizePastedText } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * console.log(EXTRACT_LIMITS);
+ * console.log(sanitizePastedText("あ".repeat(EXTRACT_LIMITS.characters + 5)).truncated);
+ * ```
+ */
 export const EXTRACT_LIMITS = {
   /** A chapter is about this long. Past it the paste is cut, and says so. */
   characters: 20_000,
@@ -42,13 +53,48 @@ const CONTROL = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu;
  * The words your dictionary confirmed, each with the kinds of word it is. A word with no kinds is
  * still a match as written; only a conjugated form needs its dictionary form to be the right kind
  * (`wordClassesOf` reads the kinds from a dictionary's parts of speech).
+ *
+ * @example
+ * ```ts
+ * import type { KnownWords } from "@johnmorrisdotca/hikidashi/extract";
+ * import { wordClassesOf } from "@johnmorrisdotca/hikidashi/deinflect";
+ *
+ * const known: KnownWords = new Map([["学校", []], ["行く", wordClassesOf("行く", ["v5k-s"])]]);
+ * console.log([...known]);
+ * ```
  */
 export type KnownWords = ReadonlyMap<string, readonly WordClass[]>;
 
-/** What to read, and the dictionary to read it against. Without `known` only kanji are found. */
-export type ExtractInput = { text: string; known?: KnownWords };
+/**
+ * What to read, and the dictionary to read it against: the argument of `extractFromText`.
+ *
+ * @example
+ * ```ts
+ * import { extractFromText, type ExtractInput } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * const input: ExtractInput = { text: "毎日、水を飲む。" };
+ * console.log(extractFromText(input).kanji);
+ * ```
+ */
+export type ExtractInput = {
+  /** The pasted text, of any length; it is cut to `EXTRACT_LIMITS.characters`. */
+  text: string;
+  /** The words your dictionary confirmed. Without it, only kanji are found. */
+  known?: KnownWords;
+};
 
-/** The words found, then the kanji, each once, in the order they first appear; and what the paste held. */
+/**
+ * The words found, then the kanji, each once, in the order they first appear; and what the paste held. What
+ * `extractFromText` gives.
+ *
+ * @example
+ * ```ts
+ * import { extractFromText, type ExtractResult } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * const result: ExtractResult = extractFromText({ text: "先生と学校", known: new Map([["先生", []]]) });
+ * console.log(result.words, result.kanji, result.stats);
+ * ```
+ */
 export type ExtractResult = {
   /** Dictionary forms: 行きます is 行く. */
   words: string[];
@@ -58,7 +104,19 @@ export type ExtractResult = {
   stats: { characters: number; truncated: boolean; kanji: number; words: number };
 };
 
-/** The text as it will be read: cut to the cap, stripped of what cannot be read. */
+/**
+ * The text as it will be read: control and invisible characters (and line and paragraph separators) turned into
+ * spaces, then cut to `EXTRACT_LIMITS.characters`.
+ *
+ * @param raw - The pasted text, of any length.
+ * @returns The cleaned text, and whether it was cut.
+ * @example
+ * ```ts
+ * import { sanitizePastedText } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * console.log(sanitizePastedText("水\u0000を\u200b飲む"));
+ * ```
+ */
 export function sanitizePastedText(raw: string): { text: string; truncated: boolean } {
   const cleaned = String(raw ?? "").replace(CONTROL, " ");
   const characters = Array.from(cleaned);
@@ -77,6 +135,17 @@ function conjugatedForms(written: string) {
  * because a long paste of Japanese has more substrings than anybody needs to look up. Conjugated
  * forms are offered as the dictionary forms they could come from, and a single character is never
  * offered, since that is a kanji.
+ *
+ * @param text - The pasted text; it is cleaned and cut as `sanitizePastedText` does first.
+ * @returns Every run of two or more characters a dictionary might list, and the dictionary forms of conjugated runs,
+ * each once, at most `EXTRACT_LIMITS.candidates`; an empty list for text with no Japanese in it.
+ * @example
+ * ```ts
+ * import { wordCandidates } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * const candidates = wordCandidates("学校へ行きます");
+ * console.log(candidates.includes("学校"), candidates.includes("行く"), candidates.length);
+ * ```
  */
 export function wordCandidates(text: string): string[] {
   const candidates = new Set<string>();
@@ -130,6 +199,19 @@ function wordAt(characters: string[], index: number, known: KnownWords): { lengt
  * Both, rather than one or the other. A handout of vocabulary is wanted as words; the same handout is
  * also the kanji a learner has to write, and which of the two somebody meant is not for this to decide.
  * Show the result first, and let them take out what they did not want.
+ *
+ * @param input - The text, and `known`, the words your dictionary confirmed (a Map from word to its kinds).
+ * @returns The words `known` lists, in dictionary form and in the order they first appear, every kanji in the text,
+ * and counts of what the paste held. With no `known`, `words` is empty.
+ * @example
+ * ```ts
+ * import type { WordClass } from "@johnmorrisdotca/hikidashi/deinflect";
+ * import { extractFromText } from "@johnmorrisdotca/hikidashi/extract";
+ *
+ * const known = new Map<string, WordClass[]>([["先生", []], ["学校", []], ["行く", ["godan"]], ["行き", []]]);
+ * console.log(extractFromText({ text: "先生と学校へ行きます", known }).words);
+ * console.log(extractFromText({ text: "東京行きの電車", known }).words);
+ * ```
  */
 export function extractFromText({ text, known = new Map() }: ExtractInput): ExtractResult {
   const { text: safe, truncated } = sanitizePastedText(text);
