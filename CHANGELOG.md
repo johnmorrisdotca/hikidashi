@@ -6,6 +6,20 @@ All notable changes to this project are written here. The format follows
 
 ## [Unreleased]
 
+Nothing that is exported has changed: the package's code is the same, and every export now carries the doc comment its documentation page is made from.
+
+### Added
+
+- A documentation site at https://johnmorrisdotca.github.io/hikidashi/docs/, in English and Japanese: a page for every export, with its definition, its parameters, what it returns and what `null` means, and examples that are run when the site is built, shown with what they print; Getting started, five how-to guides, two explanations, Troubleshooting & FAQ, and Upgrading (with Intl's Japanese calendar, wanakana and kuromoji compared); the changelog; search that runs in the browser; `llms.txt` and `llms-full.txt`. `api.html` stays, as an index whose old anchors each lead to the export's page.
+- Every export has a doc comment with `@param`, `@returns` and an `@example`, so an editor shows them on hover.
+- The README's title carries the English job beside the name, "Hikidashi 引き出し — Japanese text tools for JavaScript", and so does the npm description; the README has a size badge (6.4 kB minified and gzipped, measured with esbuild), an npm provenance badge, links to the documentation, and a note on installing the package under an English name (`npm install japanese-text@npm:@johnmorrisdotca/hikidashi`).
+- Repository only: `scripts/docs-site.mjs`, the family's documentation site generator, with `pnpm docs:site`, `pnpm docs:check` and `pnpm size`; `src/docs-site.test.js` and `e2e/docs-site.demo.mjs`; `docs/ROLLOUT.md`, the steps by which every package of the family adopts it; `scripts/social-preview.mjs`, which makes each package's 1280×640 social preview.
+
+### Changed
+
+- The README's section on the drawers keeps each drawer's first calls and the era table, and points to the documentation's "How each drawer works", where the longer explanations now are, in full.
+- The demo's header has a Docs link beside the API reference.
+
 ## [1.0.2] - 2026-10-06
 
 Nothing that was exported has changed. The README is the family's one layout, in full.
