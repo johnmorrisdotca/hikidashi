@@ -36,7 +36,10 @@ const DICTIONARY = new Map([
   ["来る", ["kuru"]],
 ]);
 
-const language = familyLanguage({ id: "hikidashi", words: WORDS, onChange: () => render() });
+// The header's link to the documentation opens it in the page's language.
+const docsLink = (lang) => document.querySelector('header a[href^="docs/"]')?.setAttribute("href", lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
+const language = familyLanguage({ id: "hikidashi", words: WORDS, onChange: (lang) => { docsLink(lang); render(); } });
+docsLink(language.lang);
 /** A line of the page in its language, with each `{name}` filled in from `values`. */
 const say = (key, values) => {
   const word = WORDS[language.lang][key];

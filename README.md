@@ -1,4 +1,4 @@
-<h1 align="center">Hikidashi <sub>引き出し</sub></h1>
+<h1 align="center">Hikidashi <sub>引き出し</sub> — Japanese text tools for JavaScript</h1>
 
 <p align="center"><strong>A drawer of small Japanese text tools for JavaScript and TypeScript.</strong><br>
 Era dates (和暦) and kanji numerals both ways, the dictionary forms a conjugated verb or adjective could come from, a word's reading shared out over its kanji (かん字テスト), Japanese words and kanji pulled out of pasted text, and how hard a sentence is to read. Pure functions with no data of their own. No dependencies.</p>
@@ -9,16 +9,18 @@ Era dates (和暦) and kanji numerals both ways, the dictionary forms a conjugat
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-2f5d4a"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-0-2f5d4a">
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
+  <a href="https://johnmorrisdotca.github.io/hikidashi/docs/api/main/index.html"><img alt="6.4 kB minified and gzipped" src="https://img.shields.io/badge/min%2Bgzip-6.4%20kB-2f5d4a"></a>
+  <a href="https://www.npmjs.com/package/@johnmorrisdotca/hikidashi#provenance"><img alt="Published with npm provenance" src="https://img.shields.io/badge/npm-provenance-2f5d4a"></a>
 </p>
 
-<p align="center"><a href="https://johnmorrisdotca.github.io/hikidashi/"><strong>Try the drawers →</strong></a> · <a href="https://johnmorrisdotca.github.io/hikidashi/api.html">API reference</a></p>
+<p align="center"><a href="https://johnmorrisdotca.github.io/hikidashi/"><strong>Try the drawers →</strong></a> · <a href="https://johnmorrisdotca.github.io/hikidashi/docs/">Documentation</a> · <a href="https://johnmorrisdotca.github.io/hikidashi/docs/guides/getting-started.html">Getting started</a> · <a href="https://johnmorrisdotca.github.io/hikidashi/api.html">API reference</a></p>
 
 <table align="center">
 <tr>
 <td align="center" valign="top">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-desk-dark.webp">
-<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-desk-light.webp" alt="The demo on a desk, in English: the header with its language chooser, the API reference link, five cloth patches and the Help switch, then panels in two columns, each with a box to type in, a row of examples and the answer with the call that made it: Era years showing 令和6年 worked out as 2024, Kanji numerals showing 2万5千 as 25,000 and 二万五千, and under them Dictionary forms and Reading alignment" width="600">
+<img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/hero-desk-light.webp" alt="The demo on a desk, in English: the header with its language chooser, the Docs and API reference links, five cloth patches and the Help switch, then panels in two columns, each with a box to type in, a row of examples and the answer with the call that made it: Era years showing 令和6年 worked out as 2024, Kanji numerals showing 2万5千 as 25,000 and 二万五千, and under them Dictionary forms and Reading alignment" width="600">
 </picture>
 <br><em>The demo on a desk: four of the six drawers, each answering the example in its box.</em>
 </td>
@@ -142,6 +144,20 @@ npm install @johnmorrisdotca/hikidashi
 ```
 
 It is ES modules only, with its types included and `sideEffects: false`, and needs Node 22 or later outside a browser (on Node 22.12 or later it loads by `require` too). A page with no bundler imports a drawer from a CDN (`@1` is the major version).
+
+### Install under another name
+
+The package's name is Japanese. If your code reads better with the job in plain English, npm can install it under a name of your choosing, an alias, and your imports use that name:
+
+```sh
+npm install japanese-text@npm:@johnmorrisdotca/hikidashi
+```
+
+```ts no-check
+import { parseEraYear } from "japanese-text/wareki";
+```
+
+pnpm and yarn take the same `<alias>@npm:<package>` form. The alias is only a name in your `package.json`: it is the same package, version and code.
 
 ### 1. A drawer on a server or in an app
 
@@ -408,6 +424,8 @@ console.log(ranked);
 
 ## The drawers
 
+Each drawer in a few lines, with its first calls. How each one decides its answers, and every case it refuses, is in [How each drawer works](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html) in the documentation, and every function has a page of its own in the [reference](https://johnmorrisdotca.github.io/hikidashi/docs/).
+
 ### Era years: `/wareki`
 
 ```ts
@@ -429,7 +447,7 @@ formatEraYearJapanese(eraYearOf(2019)!, { gannen: true }); // "令和元年"
 | 平成 Heisei | へいせい | 1989-01-08 | 2019-04-30 | 1 to 31 |
 | 令和 Reiwa | れいわ | 2019-05-01 | still running | 1 to 99 |
 
-An era changes partway through a Western year, so five years belong to two eras: 1912, 1926, 1989 and 2019 each begin one and end another. `eraYearsOf` answers with both, newest first; `eraYearOf` the newest, which is how the year is usually written; `eraOnDate` says which a day is in, from `YYYY-MM-DD` or a `Date`. Era years restart from 元年 on the first of January, as years are counted today. 明治 is dated from 23 October 1868, when the name was proclaimed, and its years are counted as if it began with 1868. All dates are in the Gregorian calendar. A year an era never reached (昭和65), a day that is not on the calendar and anything before 明治 give `null`. `parseEraYear` reads kanji or Latin names, any romanization (Showa, Shouwa, Shōwa), full-width digits, with or without 年.
+An era changes partway through a Western year, so the years 1912, 1926, 1989 and 2019 each belong to two eras: `eraYearsOf` answers with both, and `eraOnDate` says which one a day is in. A year an era never reached (昭和65), a day that is not on the calendar and anything before 明治 give `null`. More: [era years, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#era-years), and the [`/wareki` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/wareki/index.html).
 
 ### Kanji numerals: `/numerals`
 
@@ -444,7 +462,7 @@ readJapaneseNumber(800);                       // "はっぴゃく"
 parseEnglishNumber("5 man");                   // 50000
 ```
 
-Japanese counts in ten-thousands (万, 億, 兆, each 10,000 times the last), which is why 120 million is 一億二千万, "twelve thousand ten-thousands". The reader takes kanji, digits (half-width or full-width) and any mixture, a thousands comma, the formal numerals 壱 弐 参 拾 and the old 萬, and refuses what is not a number: units must descend (万億), kanji digits do not sit side by side (一二三), and a bare 万 is not a number. The writer drops the one where the language does (十, not 一十) and keeps it where it does not (一万). `readJapaneseNumber` says the number in hiragana: 三百 is さんびゃく, 六百 ろっぴゃく, 八千 はっせん, 一兆 いっちょう. Whole numbers from 0 to 9,007,199,254,740,991 only; past that JavaScript stops counting exactly, so it answers `null` and never a number a digit out.
+Japanese counts in ten-thousands (万, 億, 兆), which is why 120 million is 一億二千万. The reader takes kanji, digits and any mixture, and refuses what is not a number (万億, 一二三, a bare 万) with `null`; whole numbers from 0 to 9,007,199,254,740,991 only. More: [kanji numerals, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#kanji-numerals), and the [`/numerals` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/numerals/index.html).
 
 ### Dictionary forms: `/deinflect`
 
@@ -456,7 +474,7 @@ dictionaryForms("食べませんでした");
 wordClassesOf("行く", ["v5k-s", "vi"]);       // ["godan"], from JMdict's tags
 ```
 
-A sentence writes 行きます where a dictionary lists 行く. `dictionaryForms` walks a written form back through its endings, one at a time, and answers with every dictionary form it could be a conjugation of, likeliest first, each with the kind of word it would have to be (`godan`, `ichidan`, `iAdjective`, `suru`, `kuru`). It *proposes*: 食べる is also the potential of a verb 食ぶ that does not exist, so a caller keeps only the answers its own dictionary confirms are that kind of word, which is what `wordClassesOf` is for (it reads plain labels such as `"godan verb"` and JMdict's tags such as `v5k`). There is deliberately no rule that reads a bare stem as its verb: 東京行き is a noun, and 行き is a verb only when an ending follows it. Covered: the polite, negative, past, te, conditional, volitional, passive, causative and potential forms and chains of them (食べさせられませんでした), する and 来る (and 来る in kana, after kana: 持ってきた). Not covered: the imperative, keigo verbs, and な adjectives, which do not conjugate onto themselves.
+A sentence writes 行きます where a dictionary lists 行く. `dictionaryForms` *proposes* every dictionary form a written word could come from, likeliest first, each with the kind of word it would have to be, and your dictionary confirms which is real, through `wordClassesOf`. Not covered: the imperative, keigo verbs, and な adjectives. More: [dictionary forms, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#dictionary-forms), and the [`/deinflect` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/deinflect/index.html).
 
 ### Reading alignment: `/align`
 
@@ -470,7 +488,7 @@ const words = [{ word: "食べる", reading: "たべる" }, { word: "水", readi
 buildKanjiTest(words, { seed: 7, count: 12 });   // { writing: [...], reading: [...] }, the same test for the same seed
 ```
 
-A Japanese school's かん字テスト shows a reading beside empty squares and asks for the kanji, and the okurigana that end the word are written in brackets under them. The kana in a word are anchors in its reading, which is what lets the rest be shared out over the kanji: 形が合う read かたちがあう is 形 (かたち), が, 合 (あ), う. A compound of several kanji (絵日記, えにっき) is one segment, since a reading cannot be split between kanji without a dictionary. The reading may be katakana. `segmentWord` is `null` when the reading does not fit, so a test leaves the word out rather than mark a wrong answer right. `kanjiAsWord` turns a kanji and its dictionary readings (た.べる) into a word to ask. `buildKanjiTest` makes a writing half and a different reading half from a list, shuffled by a seed (mulberry32) so the test on paper is the test on screen. The shared `katakanaToHiragana` and `hiraganaToKatakana` are exported beside it.
+The kana in a word are anchors in its reading, which lets the rest be shared out over the kanji, the way a school's かん字テスト sets it: 形が合う read かたちがあう is 形 (かたち), が, 合 (あ), う. `segmentWord` is `null` when the reading does not fit, so a test leaves the word out; `buildKanjiTest` makes a seeded test from a list. More: [reading alignment, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#reading-alignment), and the [`/align` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/align/index.html).
 
 ### Pasted text: `/extract`
 
@@ -483,7 +501,7 @@ extractFromText({ text: "先生と学校へ行きます", known });
 // { words: ["先生", "学校", "行く"], kanji: ["先", "生", "学", "校", "行"], stats: { characters: 10, … } }
 ```
 
-Somebody pastes a page of a book, a handout or a chat message and wants the words and kanji out of it. The text is never stored and never trusted for its length: it is cut to `EXTRACT_LIMITS.characters`, control and invisible characters are dropped, and what comes back is not the text but the words your dictionary recognised and single kanji. `known` is a `Map` from each word to the kinds of word it is, from your own dictionary; the package has none. Words match longest first, a conjugated verb or adjective is returned as the dictionary form `known` lists (行きます is 行く, never the noun 行き, unless an ending that only a verb takes follows it), and every kanji is taken whether or not it belongs to a word. `wordCandidates` lists every substring a dictionary might know, capped, so a page can ask its database once about a whole paste and pass the answers as `known`. 々 and 〇 are not counted as kanji.
+The text is never stored and never trusted for its length: it is cut to `EXTRACT_LIMITS.characters`, and what comes back is the words your dictionary (`known`) recognised, in dictionary form, and single kanji. `wordCandidates` lists what to ask your database, once per paste. More: [pasted text, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#pasted-text), the [how-to](https://johnmorrisdotca.github.io/hikidashi/docs/guides/extract-words-from-a-paste.html), and the [`/extract` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/extract/index.html).
 
 ### Sentence difficulty: `/difficulty`
 
@@ -494,11 +512,11 @@ const costs = new Map([["水", kanjiCost({ grade: 1, frequencyRank: 223 })], ["�
 sentenceDifficulty("水を飲む。", costs);   // 14: five characters and three times the hardest kanji's 3
 ```
 
-Two things make a sentence hard: how long it is, and the hardest character in it. The score is its length plus three times its hardest kanji's cost, so a kana-only sentence scores its length and sorts first, and one unknown character weighs as much as ten. `kanjiCost` turns what you hold about a kanji into a cost: grades 1 to 6 cost their own number, grade 8 (the rest of the jōyō kanji) costs 9, name kanji 14, an ungraded kanji costs by its frequency rank, up to 18, and a kanji you know nothing about costs 20 (`UNKNOWN_KANJI_COST`). The grades and ranks are in KANJIDIC2 and other kanji databases; none is shipped here.
+The score is a sentence's length plus three times its hardest kanji's cost, so a kana-only sentence sorts first. `kanjiCost` turns a school grade or a frequency rank you hold into a cost from 1 to 20; none is shipped here. More: [sentence difficulty, explained](https://johnmorrisdotca.github.io/hikidashi/docs/guides/how-it-works.html#sentence-difficulty), and the [`/difficulty` reference](https://johnmorrisdotca.github.io/hikidashi/docs/api/difficulty/index.html).
 
 ## API
 
-The [API reference](https://johnmorrisdotca.github.io/hikidashi/api.html) lists every export of every entry point with its signature and its doc comment. It is made from the source by `pnpm site`, so it cannot fall behind the code.
+The [documentation](https://johnmorrisdotca.github.io/hikidashi/docs/) has a page for every export of every entry point: its signature, its parameters, what it returns and what `null` means, and examples that are run when the site is built, with what they print. It is made from the source and its doc comments by `pnpm docs:site`, so it cannot fall behind the code, and it is searchable. The one-page [API reference](https://johnmorrisdotca.github.io/hikidashi/api.html) lists every export and links to its page.
 
 | Entry | Exports |
 | --- | --- |
@@ -551,7 +569,7 @@ Nothing here touches the DOM, the network or the file system, so the package run
 
 ## Languages
 
-The functions answer in kanji, kana and numbers, so they have no words of their own to translate. The demo is in English and Japanese, chosen by its own chooser, taking the browser's language on a first visit. **Japanese: included; not yet reviewed by a native reader. Corrections welcome.** Every line of the demo is listed beside its English in [docs/strings-ja.md](./docs/strings-ja.md), and there is an [issue template](https://github.com/johnmorrisdotca/hikidashi/issues/new?template=fix-a-translation.md) for fixing one.
+The functions answer in kanji, kana and numbers, so they have no words of their own to translate. The [documentation](https://johnmorrisdotca.github.io/hikidashi/docs/) is in English and [Japanese](https://johnmorrisdotca.github.io/hikidashi/docs/ja/index.html): every guide in both, and the reference's descriptions and examples in English under Japanese headings. The demo is in English and Japanese, chosen by its own chooser, taking the browser's language on a first visit. **Japanese: included; not yet reviewed by a native reader. Corrections welcome.** Every line of the demo is listed beside its English in [docs/strings-ja.md](./docs/strings-ja.md), and there is an [issue template](https://github.com/johnmorrisdotca/hikidashi/issues/new?template=fix-a-translation.md) for fixing one.
 
 ## Roadmap
 
@@ -581,7 +599,7 @@ src/
 └── version.ts          the package's version
 ```
 
-Tests sit beside the code they test (`*.test.ts`). `scripts/` builds the demo and its API reference page, takes the README's pictures and checks the package as npm packs it; `demo/` is the page, and `e2e/` its browser tests.
+Tests sit beside the code they test (`*.test.ts`). `scripts/` builds the demo, its API reference page and the documentation site, takes the README's pictures and checks the package as npm packs it; `demo/` is the page, and `e2e/` its browser tests.
 
 ## The name
 
@@ -644,7 +662,12 @@ pnpm site           # build the demo into site/, as the Pages workflow publishes
 pnpm test:readme    # run every example in the README against the built package
 pnpm screenshots:readme   # take the README's pictures from the built demo, in light and dark
 pnpm docs:make      # rewrite docs/strings-ja.md after changing a word of the demo
+pnpm docs:check     # the docs' checks: a TSDoc summary, @param, @returns and @example on every export, guide links, every example run
+pnpm docs:site      # build the documentation into site/docs/ (after pnpm site), with its search index, llms.txt and llms-full.txt
+pnpm size           # each entry point, bundled, minified and gzipped (pnpm size --write records docs/bundle-size.json)
 ```
+
+The documentation's guides are Markdown in [`docs/guides/`](./docs/guides/) (English) and [`docs/guides/ja/`](./docs/guides/ja/) (Japanese); the reference is made from the doc comments in `src/`. The generator, `scripts/docs-site.mjs`, is the same file in every package of the family; [docs/ROLLOUT.md](./docs/ROLLOUT.md) says how a package adopts it.
 
 ## Contributing
 

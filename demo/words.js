@@ -2,6 +2,7 @@
 // docs/strings-ja.md lists these beside each other, and a test keeps that list true (`pnpm docs:make` rewrites it).
 export const WORDS = {
   en: {
+    pageDocs: "Docs",
     pageApi: "API reference",
     pitch: "A drawer of small Japanese text tools: era dates, kanji numerals, the dictionary forms of a verb, a reading shared out over its kanji, words pulled from pasted text, and how hard a sentence is. Type in any panel and the answer appears. Each one is the package's own function.",
     name: "Hikidashi (引き出し) is Japanese for “drawer”, and 引き出しが多い, “many drawers”, is said of someone with a deep store to draw on.",
@@ -64,6 +65,7 @@ export const WORDS = {
     difficulty_cost: "cost {cost}",
   },
   ja: {
+    pageDocs: "ドキュメント",
     pageApi: "API（英語）",
     pitch: "日本語の小さな道具を入れた引き出しです：元号の年、漢数字、動詞の辞書形、漢字への読みの割り当て、貼り付けた文章からの単語拾い、文の難しさ。どのパネルでも、入力するとすぐ答えが出ます。どれもパッケージ自身の関数です。",
     name: "「引き出し」はタンスや机のひきだしのこと。「引き出しが多い」は、知識や経験を豊富にたくわえている人のことをいいます。",

@@ -7,6 +7,7 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 
 | Name | English | Japanese |
 | --- | --- | --- |
+| `pageDocs` | Docs | ドキュメント |
 | `pageApi` | API reference | API（英語） |
 | `pitch` | A drawer of small Japanese text tools: era dates, kanji numerals, the dictionary forms of a verb, a reading shared out over its kanji, words pulled from pasted text, and how hard a sentence is. Type in any panel and the answer appears. Each one is the package's own function. | 日本語の小さな道具を入れた引き出しです：元号の年、漢数字、動詞の辞書形、漢字への読みの割り当て、貼り付けた文章からの単語拾い、文の難しさ。どのパネルでも、入力するとすぐ答えが出ます。どれもパッケージ自身の関数です。 |
 | `name` | Hikidashi (引き出し) is Japanese for “drawer”, and 引き出しが多い, “many drawers”, is said of someone with a deep store to draw on. | 「引き出し」はタンスや机のひきだしのこと。「引き出しが多い」は、知識や経験を豊富にたくわえている人のことをいいます。 |
