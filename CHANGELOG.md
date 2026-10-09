@@ -6,6 +6,10 @@ All notable changes to this project are written here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
+
 ## [1.0.3] - 2026-10-09
 
 Nothing that is exported has changed: the package's code is the same, and every export now carries the doc comment its documentation page is made from.
