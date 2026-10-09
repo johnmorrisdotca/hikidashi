@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/hikidashi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Hikidashi 引き出し — Japanese text tools for JavaScript: era dates (和暦) and kanji numerals both ways, dictionary forms of conjugated words, readings shared over kanji, words pulled from pasted text, sentence difficulty. Zero dependencies.",
   "keywords": [
     "japanese",

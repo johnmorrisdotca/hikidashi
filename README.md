@@ -677,7 +677,7 @@ Please follow the [code of conduct](./CODE_OF_CONDUCT.md). Text that makes a fun
 
 ## Changes
 
-See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.0.2, adds no code: it is this README in full, with pictures of every drawer, examples that are run on every change, examples for React, Vue, Svelte and Angular, and an Accessibility section.
+See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.0.3, adds no code: it adds the [documentation site](https://johnmorrisdotca.github.io/hikidashi/docs/) in English and Japanese, a doc comment with an example on every export, and the English job in the title.
 
 ## Licence
 
