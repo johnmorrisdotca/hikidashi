@@ -1,9 +1,12 @@
 {
   "name": "@johnmorrisdotca/hikidashi",
   "version": "1.0.2",
-  "description": "Hikidashi 引き出し, a drawer of small Japanese text tools: era dates, kanji numerals both ways, dictionary forms of conjugated words, readings shared over kanji, words pulled from pasted text, and sentence difficulty. Zero dependencies.",
+  "description": "Hikidashi 引き出し — Japanese text tools for JavaScript: era dates (和暦) and kanji numerals both ways, dictionary forms of conjugated words, readings shared over kanji, words pulled from pasted text, sentence difficulty. Zero dependencies.",
   "keywords": [
     "japanese",
+    "text-tools",
+    "japanese-text-tools",
+    "japanese-text",
     "nihongo",
     "wareki",
     "japanese-era",
@@ -112,15 +115,21 @@
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "prepublishOnly": "pnpm check && pnpm build",
     "site": "pnpm build && node scripts/site.mjs",
-    "test:demo": "pnpm site && playwright test",
+    "test:demo": "pnpm site && node scripts/docs-site.mjs build && playwright test",
     "screenshots:readme": "pnpm site && node scripts/readme-pictures.mjs",
     "test:readme": "pnpm build && node scripts/check-readme-examples.mjs",
-    "docs:make": "node scripts/docs.mjs"
+    "docs:make": "node scripts/docs.mjs",
+    "docs:site": "pnpm build && node scripts/docs-site.mjs build",
+    "docs:check": "pnpm build && node scripts/docs-site.mjs check",
+    "size": "node scripts/docs-site.mjs size"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
     "@playwright/test": "^1.63.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9.0.0",
+    "marked": "^18.1.0",
+    "pagefind": "^1.5.2",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.0.0",
     "vitest": "^5.0.0"

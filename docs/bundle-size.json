@@ -1,0 +1,33 @@
+{
+  "measured": "esbuild 0.28.2, bundled, minified, ES2020, gzip level 9",
+  "entries": {
+    ".": {
+      "minified": 18091,
+      "gzip": 6449
+    },
+    "./wareki": {
+      "minified": 2697,
+      "gzip": 1292
+    },
+    "./numerals": {
+      "minified": 4272,
+      "gzip": 1849
+    },
+    "./deinflect": {
+      "minified": 6761,
+      "gzip": 1902
+    },
+    "./align": {
+      "minified": 2201,
+      "gzip": 1139
+    },
+    "./extract": {
+      "minified": 7815,
+      "gzip": 2249
+    },
+    "./difficulty": {
+      "minified": 471,
+      "gzip": 346
+    }
+  }
+}
