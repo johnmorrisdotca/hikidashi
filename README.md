@@ -526,6 +526,8 @@ The [documentation](https://johnmorrisdotca.github.io/hikidashi/docs/) has a pag
 | `@johnmorrisdotca/hikidashi/align` | `segmentWord`, `kanjiAsWord`, `buildKanjiTest`, `katakanaToHiragana`, `hiraganaToKatakana`, `SEGMENT_KINDS`, `ALIGN_LIMITS`, and the types `WordSegment`, `ReadWord`, `KanjiTest` and `KanjiTestQuestion` |
 | `@johnmorrisdotca/hikidashi/extract` | `extractFromText`, `wordCandidates`, `sanitizePastedText`, `EXTRACT_LIMITS`, and the types `KnownWords`, `ExtractInput` and `ExtractResult` |
 | `@johnmorrisdotca/hikidashi/difficulty` | `kanjiCost`, `kanjiIn`, `sentenceDifficulty`, `UNKNOWN_KANJI_COST`, and the type `KanjiDifficultySource` |
+| `@johnmorrisdotca/hikidashi/element` | `HikidashiFurigana`, `HikidashiEra`, `HikidashiNumerals`, `defineFurigana`, `defineEra`, `defineNumerals`, `HIKIDASHI_EMBED_OPTION_KEYS`, and the types `HikidashiResult`, `HikidashiElementOptions` |
+| `@johnmorrisdotca/hikidashi/element/define` | Registers the three default tags and reexports the element entry |
 | `@johnmorrisdotca/hikidashi` | all of the above, from one import |
 
 Every function is pure: it returns new values and never changes what it was given. Anything that is not text where text is expected is refused, not thrown at.
@@ -587,6 +589,8 @@ Each drawer is a plain module with no DOM, and an entry of its own in `package.j
 
 ```text
 src/
+├── element.ts                   # furigana, era and numeral elements
+├── element-define.ts            # default tag registration
 ├── index.ts            the main entry: every drawer
 ├── wareki.ts           era years and dates, both ways: the "/wareki" entry
 ├── numerals.ts         kanji numerals, read, written and said aloud: the "/numerals" entry
@@ -708,3 +712,27 @@ See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.0.3, adds no code: it 
 
 MIT, © John Morris. The package is code only and ships no data. The demo's one small table (the school grade of thirty-odd kanji, typed in to show `kanjiCost`) is credited in [NOTICE.md](./NOTICE.md), and is not part of the published package.
 
+
+
+### Embed builder
+
+[Build a Japanese text embed](https://johnmorrisdotca.github.io/hikidashi/builder.html), preview furigana, an era year or numerals, and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. Choices stay in the URL; embeds read no storage.
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@johnmorrisdotca/hikidashi@1/dist/element-define.js"></script>
+<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
+<hikidashi-era value="2019-05-01" size="small"></hikidashi-era>
+<hikidashi-numerals value="12345" size="small"></hikidashi-numerals>
+```
+
+In Svelte, register the tags in the browser.
+
+```svelte
+<script>
+  import { onMount } from "svelte";
+  onMount(() => { void import("@johnmorrisdotca/hikidashi/element/define"); });
+</script>
+<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
+```
+
+Every attribute is reflected as a property; `result` keeps the structured conversion result. `options` accepts host callbacks. `size` is small (320px), medium (480px) or large (640px), with optional pixel `width`, auto/light/dark `theme` and a spoken `label`. See [the embed guide](docs/embeds.md).
