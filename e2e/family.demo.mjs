@@ -11,7 +11,7 @@ test("the family groups remain readable and translate on phones and desks", asyn
   await expect(page.locator('footer a[aria-current="page"]')).toHaveText("Hikidashi");
   await expect(groups.last().locator("a")).toHaveAttribute("href", "https://spxis.github.io/rest-in-pieces/");
   await page.locator('[data-lang="ja"]').click();
-  await expect(groups.first().locator("strong")).toHaveText("ゲーム — ボード");
+  await expect(groups.first().locator("strong")).toHaveText("ボードゲーム");
   await expect(groups.last().locator("a")).toHaveAttribute("title", /フロントエンド/);
   await noSidewaysScroll(page);
   await page.locator('[data-lang="en"]').click();
