@@ -100,11 +100,11 @@ class TextTool extends ElementBase {
       }
       if (result === null) throw new RangeError((this.getAttribute("lang") ?? doc.documentElement.lang) === "ja" ? "入力を読み取れません。値を確認してください。" : "The input could not be read. Check the value.");
       this.#result = result; this.replaceChildren(style, output); this.#options.onChange?.(result);
-      const detail = JSON.parse(JSON.stringify({ kind: this.kind, result }));
+      const detail = { kind: this.kind, valid: true };
       this.dispatchEvent(new CustomEvent("hikidashi-change", { bubbles: true, composed: true, detail })); this.dispatchEvent(new CustomEvent("hikidashi-load", { bubbles: true, composed: true, detail }));
     } catch (error) {
       this.#result = null; const message = error instanceof Error ? error.message : String(error); output.setAttribute("role", "status"); output.textContent = message; this.replaceChildren(style, output); this.#options.onError?.({ message });
-      this.dispatchEvent(new CustomEvent("hikidashi-error", { bubbles: true, composed: true, detail: { message } }));
+      this.dispatchEvent(new CustomEvent("hikidashi-error", { bubbles: true, composed: true, detail: { kind: this.kind, message: (this.getAttribute("lang") ?? doc.documentElement.lang) === "ja" ? "入力を読み取れません。値を確認してください。" : "The input could not be read. Check the value." } }));
     }
   }
 }

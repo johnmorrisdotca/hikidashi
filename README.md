@@ -261,6 +261,29 @@ export class EraYearComponent {
 }
 ```
 
+### Embed builder
+
+[Build a Japanese text embed](https://johnmorrisdotca.github.io/hikidashi/builder.html), preview furigana, an era year or numerals, and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. Choices stay in the URL; embeds read no storage.
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@johnmorrisdotca/hikidashi@1/dist/element-define.js"></script>
+<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
+<hikidashi-era value="2019-05-01" size="small"></hikidashi-era>
+<hikidashi-numerals value="12345" size="small"></hikidashi-numerals>
+```
+
+In Svelte, register the tags in the browser.
+
+```svelte
+<script>
+  import { onMount } from "svelte";
+  onMount(() => { void import("@johnmorrisdotca/hikidashi/element/define"); });
+</script>
+<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
+```
+
+Every attribute is reflected as a property; `result` keeps the structured conversion result. `options` accepts host callbacks. Public events and frames send status metadata only; full results stay local. `size` is small (320px), medium (480px) or large (640px), with optional pixel `width`, auto/light/dark `theme` and a spoken `label`. See [the embed guide](docs/embeds.md).
+
 ## Examples
 
 Each example is a whole recipe: copy it and it works. They are run in CI against the built package (`pnpm test:readme`), so none of them is a guess, and the output shown is what they print.
@@ -667,7 +690,7 @@ Hikidashi is one of twenty-eight packages, each made for the same site, each at
 
 **Geography & data**
 
-- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada, Japan, Australia and the United Kingdom. [Demo](https://johnmorrisdotca.github.io/address-plus/).
+- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada, Japan, Australia, France, Germany and the United Kingdom. [Demo](https://johnmorrisdotca.github.io/address-plus/).
 - [Chizu](https://github.com/johnmorrisdotca/chizu) (地図): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts. [Demo](https://johnmorrisdotca.github.io/chizu/).
 - [Hata](https://github.com/johnmorrisdotca/hata) (旗): country and regional flags as SVG, at their true proportions and keyed by ISO code. [Demo](https://johnmorrisdotca.github.io/hata/).
 - [Kuni](https://github.com/johnmorrisdotca/kuni) (国): countries and their regions, with ISO codes and names in English and Japanese. [Demo](https://johnmorrisdotca.github.io/kuni/).
@@ -711,28 +734,3 @@ See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.0.3, adds no code: it 
 ## Licence
 
 MIT, © John Morris. The package is code only and ships no data. The demo's one small table (the school grade of thirty-odd kanji, typed in to show `kanjiCost`) is credited in [NOTICE.md](./NOTICE.md), and is not part of the published package.
-
-
-
-### Embed builder
-
-[Build a Japanese text embed](https://johnmorrisdotca.github.io/hikidashi/builder.html), preview furigana, an era year or numerals, and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. Choices stay in the URL; embeds read no storage.
-
-```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@johnmorrisdotca/hikidashi@1/dist/element-define.js"></script>
-<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
-<hikidashi-era value="2019-05-01" size="small"></hikidashi-era>
-<hikidashi-numerals value="12345" size="small"></hikidashi-numerals>
-```
-
-In Svelte, register the tags in the browser.
-
-```svelte
-<script>
-  import { onMount } from "svelte";
-  onMount(() => { void import("@johnmorrisdotca/hikidashi/element/define"); });
-</script>
-<hikidashi-furigana text="食べる" reading="たべる" size="small"></hikidashi-furigana>
-```
-
-Every attribute is reflected as a property; `result` keeps the structured conversion result. `options` accepts host callbacks. `size` is small (320px), medium (480px) or large (640px), with optional pixel `width`, auto/light/dark `theme` and a spoken `label`. See [the embed guide](docs/embeds.md).

@@ -5,20 +5,19 @@ All notable changes to this project are written here. The format follows
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
-
 ### Added
 
 - Furigana, Japanese era-year and numeral custom elements, a shared embed builder and validated iframe routes. Attributes reflect to properties; structured results and host callbacks are available, with composed JSON-safe native events.
-
-
-
-### Added
 
 - Share a package-independent embed builder for option controls, preview adapters, code tabs and shareable links.
 
 ### Changed
 
+- Keep text-conversion results in local getters/callbacks; public embed events and frame messages carry status metadata only. Add the embed job to the English/Japanese documentation guides.
+
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
+
+- Update the shared family description for addresses in all seven supported countries, including France and Germany.
 
 ## [1.0.3] - 2026-10-09
 

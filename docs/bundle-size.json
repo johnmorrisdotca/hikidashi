@@ -30,12 +30,12 @@
       "gzip": 348
     },
     "./element": {
-      "minified": 14294,
-      "gzip": 5407
+      "minified": 14521,
+      "gzip": 5402
     },
     "./element/define": {
-      "minified": 14309,
-      "gzip": 5413
+      "minified": 14536,
+      "gzip": 5411
     }
   }
 }
