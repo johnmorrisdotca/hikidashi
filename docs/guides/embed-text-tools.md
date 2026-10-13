@@ -11,6 +11,9 @@ The preview uses the package's native segmentation and conversion functions.
 
 ## Put a tool in HTML
 
+The builder’s Docs link follows the selected English or Japanese language; its API link opens the preserved export index.
+
+
 Load the definition entry once, then add any of the three elements. Text and
 readings are ordinary attributes; the furigana element renders native ruby/rt.
 

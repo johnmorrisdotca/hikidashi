@@ -13,6 +13,8 @@ All notable changes to this project are written here. The format follows
 
 ### Changed
 
+- Add language-aware Docs and API navigation to the text-tool embed builder.
+
 - Keep text-conversion results in local getters/callbacks; public embed events and frame messages carry status metadata only. Add the embed job to the English/Japanese documentation guides.
 
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
