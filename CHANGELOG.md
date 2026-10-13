@@ -5,6 +5,8 @@ All notable changes to this project are written here. The format follows
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+- Keep large resource catalogues on the docs entry index and the active resource beside core navigation, preserving all reference pages while avoiding repeated catalogues on every page.
 ### Added
 
 - Furigana, Japanese era-year and numeral custom elements, a shared embed builder and validated iframe routes. Attributes reflect to properties; structured results and host callbacks are available, with composed JSON-safe native events.

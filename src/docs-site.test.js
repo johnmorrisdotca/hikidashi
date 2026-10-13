@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
-import { DOCS_SITE_VERSION, docsProblems, measureBundles, packageOf, sizeBadge } from "../scripts/docs-site.mjs";
+import { DOCS_SITE_VERSION, docsProblems, measureBundles, navigationEntries, packageOf, sizeBadge } from "../scripts/docs-site.mjs";
 
 const read = (path) => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 const sha = (path) => createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -16,8 +16,8 @@ const pkg = JSON.parse(read("package.json"));
 // The recorded hashes: the generator and its browser test are one text in every package. A change to either is made in
 // every repository at once, with a new DOCS_SITE_VERSION and the new hashes here.
 const RECORDED = {
-  version: "2026-10-12",
-  "scripts/docs-site.mjs": "b77b24e1b3ea74e1ca7d3d86a84ac7100401658b4101ceb5dfb8324d9d94fed8",
+  version: "2026-10-13",
+  "scripts/docs-site.mjs": "659b02559392f5eab44634cbaedbd46692eb49a8ef3f36e9e292b466acafacc8",
   "e2e/docs-site.demo.mjs": "ac9b9cc9708f720c91a7cf3faa302fede6fbde5468d1cf5255078b46ba665060",
 };
 
@@ -81,5 +81,25 @@ describe("the README's badges", () => {
   it("say how to install the package under a plain English name", () => {
     expect(readme).toMatch(/\n### Install under another name\n/);
     expect(readme).toContain(`@npm:${pkg.name}`);
+  });
+});
+
+
+describe("large resource catalogues", () => {
+  const core = [".", "./load", "./element", "./element/define"].map((key, at) => ({ key, slug: `core-${at}` }));
+  const drawings = Array.from({ length: 904 }, (_, at) => ({ key: `./flags/flag-${at}`, slug: `flag-${at}` }));
+  const facts = Array.from({ length: 200 }, (_, at) => ({ key: `./facts/place-${at}`, slug: `fact-${at}` }));
+
+  it("keeps core navigation and the currently viewed drawing without repeating either catalogue", () => {
+    const entries = [...core, ...drawings, ...facts];
+    expect(navigationEntries(entries, "api/flag-703/svg.html")).toEqual([...core, drawings[703]]);
+    expect(navigationEntries(entries, "api/fact-82/index.html")).toEqual([...core, facts[82]]);
+    expect(navigationEntries(entries, "guides/getting-started.html")).toEqual(core);
+    expect(entries).toHaveLength(1108);
+  });
+
+  it("keeps ordinary entry lists complete", () => {
+    const entries = [...core, ...drawings.slice(0, 49)];
+    expect(navigationEntries(entries, "index.html")).toEqual(entries);
   });
 });

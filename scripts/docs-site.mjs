@@ -65,7 +65,7 @@ import ts from "typescript";
 import { FAMILY, FAMILY_PITCH, FAMILY_SCRIPT, FAMILY_WORDS, familyFooter, familyHead, familyHeader, familyUnreviewed } from "./family-template.mjs";
 
 /** The day this file was last changed, in every repository at once. A test records the file's hash beside it. */
-export const DOCS_SITE_VERSION = "2026-10-12";
+export const DOCS_SITE_VERSION = "2026-10-13";
 
 const OWNER = "johnmorrisdotca";
 /** The kinds of guide, in the order the contents list them (Diátaxis, with troubleshooting and upgrading of their own). */
@@ -958,11 +958,24 @@ function frame(model, page, words, content) {
 const familyHeadFor = (site, { title, description, ogTitle = title }) => (site.inFamily ? familyHead({ id: site.id, title, description, ogTitle }) : [`<meta charset="utf-8" />`, `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />`, `<title>${escapeHtml(title)}</title>`, `<meta name="description" content="${escapeHtml(description)}" />`, `<meta name="theme-color" content="#2f5d4a" />`, `<meta property="og:title" content="${escapeHtml(ogTitle)}" />`, `<meta property="og:description" content="${escapeHtml(description)}" />`].join("\n    "));
 
 /** The contents: the overview, the reference by entry point, then the guides by kind, then the changelog. */
+/** Keep large sibling resource catalogues on the entry index, with the current resource open beside core entries. */
+export function navigationEntries(entries, currentPath) {
+  const parentOf = (entry) => entry.key.slice(0, entry.key.lastIndexOf("/"));
+  const counts = new Map();
+  for (const entry of entries) {
+    const parent = parentOf(entry);
+    if (parent !== "." && parent !== "") counts.set(parent, (counts.get(parent) ?? 0) + 1);
+  }
+  return entries.filter((entry) => (counts.get(parentOf(entry)) ?? 0) < 50 || currentPath.startsWith(`api/${entry.slug}/`));
+}
+
 function sidebar(model, page, words) {
   const lang = page.lang;
   const from = pagePath(lang, page.path);
   const link = (path, label, extra = "") => `<a href="${escapeHtml(hrefFrom(from, pagePath(lang, path)))}"${path === page.path ? ` aria-current="page"` : ""}>${label}${extra}</a>`;
-  const entries = model.reference.entries.map((entry) => {
+  const visible = navigationEntries(model.reference.entries, page.path);
+  const catalogue = visible.length < model.reference.entries.length ? `<li>${link("index.html#reference", escapeHtml(words.entryPoints))}</li>` : "";
+  const entries = visible.map((entry) => {
     const items = model.reference.items.filter((item) => item.entry === entry.key).sort((a, b) => a.name.localeCompare(b.name, "en"));
     const open = page.path.startsWith(`api/${entry.slug}/`);
     const code = entry.key === "." ? "" : `<span class="docs-entry-code">${escapeHtml(`/${entry.key.slice(2)}`)}</span>`;
@@ -989,6 +1002,7 @@ function sidebar(model, page, words) {
         </ul>
         <h2>${escapeHtml(words.reference)}</h2>
         <ul>
+          ${catalogue}
           ${entries}
         </ul>
         <h2>${escapeHtml(words.guides)}</h2>
