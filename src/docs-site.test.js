@@ -6,8 +6,9 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
+import ts from "typescript";
 
-import { DOCS_SITE_VERSION, docsProblems, measureBundles, navigationEntries, packageOf, sizeBadge } from "../scripts/docs-site.mjs";
+import { DOCS_SITE_VERSION, docsProblems, importLineOf, measureBundles, navigationEntries, packageOf, sizeBadge } from "../scripts/docs-site.mjs";
 
 const read = (path) => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 const sha = (path) => createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -17,7 +18,7 @@ const pkg = JSON.parse(read("package.json"));
 // every repository at once, with a new DOCS_SITE_VERSION and the new hashes here.
 const RECORDED = {
   version: "2026-10-13",
-  "scripts/docs-site.mjs": "659b02559392f5eab44634cbaedbd46692eb49a8ef3f36e9e292b466acafacc8",
+  "scripts/docs-site.mjs": "8ad0f05589e05b4f2769171d823f9c8e0a0abff915f17f7400760232282d774a",
   "e2e/docs-site.demo.mjs": "ac9b9cc9708f720c91a7cf3faa302fede6fbde5468d1cf5255078b46ba665060",
 };
 
@@ -101,5 +102,19 @@ describe("large resource catalogues", () => {
   it("keeps ordinary entry lists complete", () => {
     const entries = [...core, ...drawings.slice(0, 49)];
     expect(navigationEntries(entries, "index.html")).toEqual(entries);
+  });
+});
+
+
+describe("generated import syntax", () => {
+  it("parses default and named values and types as real TypeScript imports", () => {
+    for (const [name, kind] of [["default", "const"], ["default", "type"], ["svg", "const"], ["Options", "type"]]) {
+      const line = importLineOf({ name, kind, importPath: "@example/flags/jp" });
+      const parsed = ts.createSourceFile("import.ts", line, ts.ScriptTarget.Latest, true);
+      expect(parsed.parseDiagnostics).toEqual([]);
+      const clause = parsed.statements[0].importClause;
+      expect(clause.isTypeOnly).toBe(kind === "type");
+      expect(name === "default" ? clause.name.text : clause.namedBindings.elements[0].name.text).toBe(name === "default" ? "value" : name);
+    }
   });
 });
