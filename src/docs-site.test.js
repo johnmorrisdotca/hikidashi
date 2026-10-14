@@ -12,7 +12,9 @@ import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 
 import { describe, expect, it } from "vitest";
-import ts from "typescript";
+import * as tsModule from "typescript";
+
+const ts = tsModule.default?.createSourceFile ? tsModule.default : tsModule.createSourceFile ? tsModule : (await import("typescript-api")).default;
 
 import { DOCS_SITE_VERSION, docsProblems, importLineOf, measureBundles, modelOf, navigationEntries, packageOf, sizeBadge } from "../scripts/docs-site.mjs";
 
@@ -26,7 +28,7 @@ const pkg = JSON.parse(read("package.json"));
 // every repository at once, with a new DOCS_SITE_VERSION and the new hashes here.
 const RECORDED = {
   version: "2026-10-13-workspaces",
-  "scripts/docs-site.mjs": "2d32bdf844e9d8c278ee2cfc64e19ddb24aa35314925a63bf85c5d2dfc9ff810",
+  "scripts/docs-site.mjs": "5953399a4b239c6f721b733ba007daba8335689dbdbf746135c8d166aa91dead",
   "e2e/docs-site.demo.mjs": "6119efc290d197bb2d90cdd8eaf9dc2364bc485973c4b6f0e6da64c543594564",
 };
 

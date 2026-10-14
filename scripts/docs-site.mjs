@@ -60,7 +60,10 @@ import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 
 import { Marked } from "marked";
-import ts from "typescript";
+import * as tsModule from "typescript";
+
+// TypeScript 7 ships the native CLI; its JavaScript reader remains a separate development dependency.
+const ts = tsModule.default?.createProgram ? tsModule.default : tsModule.createProgram ? tsModule : (await import("typescript-api")).default;
 
 import { FAMILY, FAMILY_PITCH, FAMILY_SCRIPT, FAMILY_WORDS, familyFooter, familyHead, familyHeader, familyUnreviewed } from "./family-template.mjs";
 
