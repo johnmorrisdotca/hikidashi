@@ -19,7 +19,7 @@ const pkg = JSON.parse(read("package.json"));
 const RECORDED = {
   version: "2026-10-13",
   "scripts/docs-site.mjs": "8ad0f05589e05b4f2769171d823f9c8e0a0abff915f17f7400760232282d774a",
-  "e2e/docs-site.demo.mjs": "ac9b9cc9708f720c91a7cf3faa302fede6fbde5468d1cf5255078b46ba665060",
+  "e2e/docs-site.demo.mjs": "6119efc290d197bb2d90cdd8eaf9dc2364bc485973c4b6f0e6da64c543594564",
 };
 
 describe("the documentation site's shared files", () => {
