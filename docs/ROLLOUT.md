@@ -181,3 +181,11 @@ Two notes for the approval:
   of them that the owner would rather not use.
 - **Installing under another name** (README step 11) suggests one English alias per package; the alias in each README
   is the first keyword above (Hikidashi's is `japanese-text`).
+
+## Workspace SDKs and generated types
+
+Run the shared tools from the public SDK package, so imports, exports, installed dependencies and `dist/` are the real ones. Its `docs/site.json` may set `repositoryRoot` to the repository directory relative to that package (for example `../..` for `apps/api`). Guides and the changelog are read from that repository; README checks and workflow checks use it as well. Source links include the package's directory, and the family member's repository URL supplies its actual GitHub owner.
+
+An entry whose public export is type-only is included in the reference but not the JavaScript size total. Generated declaration entries explicitly set `source` to their built `.d.ts` file and `generatedBy` to the tracked script that writes it. Documentation changes belong in that writer. Both paths are relative to the SDK package, must exist inside the repository, and the normal build runs before documentation checks.
+
+An entry that imports Node built-ins sets `platform: "node"` beside its translated entry titles. Browser-only entries may use `platform: "browser"`; ordinary package entries keep `neutral`. This selects the real bundler target for size measurements, with Node built-ins external to a Node bundle. Explain the chosen target beside a size badge when it matters to a consumer.
