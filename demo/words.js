@@ -3,7 +3,7 @@
 export const WORDS = {
   en: {
     pageDocs: "Docs",
-    pageApi: "API reference",
+    pageApi: "API",
     pitch: "A drawer of small Japanese text tools: era dates, kanji numerals, the dictionary forms of a verb, a reading shared out over its kanji, words pulled from pasted text, and how hard a sentence is. Type in any panel and the answer appears. Each one is the package's own function.",
     name: "Hikidashi (引き出し) is Japanese for “drawer”, and 引き出しが多い, “many drawers”, is said of someone with a deep store to draw on.",
     nameLink: "About the name",

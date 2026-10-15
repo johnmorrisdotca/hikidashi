@@ -25,7 +25,7 @@ console.log("書き：", test.writing.map((question) => question.reading).join("
 console.log("読み：", test.reading.map((question) => question.word).join(" / "));
 ```
 
-どの単語をどちらに入れ、どの順に並べるかは、シードで決まります。シードをテストの URL に入れておけば（`?seed=20241001`）、リンクを開いた人は誰でも同じテストを受けられます。単語はそれぞれ一度だけ出題します。一覧が短くて二つに分けられないときは、片方が足りなくならないよう、同じ単語を両方で出題します。
+どの単語をどちらに入れ、どの順に並べるかは、シードで決まります。シードをテストのURLに入れておけば（`?seed=20241001`）、リンクを開いた人は誰でも同じテストを受けられます。単語はそれぞれ一度だけ出題します。一覧が短くて二つに分けられないときは、片方が足りなくならないよう、同じ単語を両方で出題します。
 
 ## マスを描く
 
@@ -45,7 +45,7 @@ console.log(line);    // [□](かたち)が[□](あ)(う)
 
 ## 一字の漢字から作る
 
-学年や教科書の章の漢字の一覧は、`kanjiAsWord` で出題する単語に変えられます。辞書にある各漢字の読みを使います（KANJIDIC2 では、語幹と送り仮名の境に点が付いています）。
+学年や教科書の章の漢字の一覧は、`kanjiAsWord`で出題する単語に変えられます。辞書にある各漢字の読みを使います（KANJIDIC2では、語幹と送り仮名の境に点が付いています）。
 
 ```ts
 import { buildKanjiTest, kanjiAsWord, type ReadWord } from "@johnmorrisdotca/hikidashi/align";
@@ -62,7 +62,7 @@ console.log(buildKanjiTest(words, { seed: 5, count: 3 }).writing.map((question) 
 
 ## 読みが合わない単語
 
-読みが当てはまらない単語（打ち間違いや、別の単語の読みなど）は、間違った答えで出題することなく、テストから外します。印刷する前に `segmentWord` で一覧を確かめておきましょう。そうした単語では `null` が返ります。
+読みが当てはまらない単語（打ち間違いや、別の単語の読みなど）は、間違った答えで出題することなく、テストから外します。印刷する前に`segmentWord`で一覧を確かめておきましょう。そうした単語では`null`が返ります。
 
 ```ts
 import { segmentWord } from "@johnmorrisdotca/hikidashi/align";

@@ -3,39 +3,39 @@
   "entries": {
     ".": {
       "minified": 18091,
-      "gzip": 6401
+      "gzip": 6449
     },
     "./wareki": {
       "minified": 2697,
-      "gzip": 1279
+      "gzip": 1292
     },
     "./numerals": {
       "minified": 4272,
-      "gzip": 1844
+      "gzip": 1849
     },
     "./deinflect": {
       "minified": 6761,
-      "gzip": 1888
+      "gzip": 1902
     },
     "./align": {
       "minified": 2201,
-      "gzip": 1135
+      "gzip": 1139
     },
     "./extract": {
       "minified": 7815,
-      "gzip": 2235
+      "gzip": 2249
     },
     "./difficulty": {
       "minified": 471,
-      "gzip": 348
+      "gzip": 346
     },
     "./element": {
       "minified": 14521,
-      "gzip": 5402
+      "gzip": 5435
     },
     "./element/define": {
       "minified": 14536,
-      "gzip": 5411
+      "gzip": 5442
     }
   }
 }
