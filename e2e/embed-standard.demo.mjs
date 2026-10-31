@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { serve } from "./demo.mjs";
+
 test("the shared builder previews all three tools and writes every host format", async ({ page }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -52,8 +53,8 @@ test("custom tags, reflected properties, JSON events and label/width restoration
     const { defineNumerals } = await import("../../dist/element.js");
     defineNumerals("article-number");
     defineNumerals("article-number");
-    const host = document.createElement("div"),
-      shadow = host.attachShadow({ mode: "open" });
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "open" });
     document.body.append(host);
     const number = document.createElement("article-number");
     number.style.width = "270px";

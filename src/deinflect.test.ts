@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { LONGEST_ENDING, WORD_CLASSES, dictionaryForms, followsAsVerbStem, wordClassesOf } from "./deinflect.ts";
+import { dictionaryForms, followsAsVerbStem, LONGEST_ENDING, WORD_CLASSES, wordClassesOf } from "./deinflect.ts";
 
 const { godan, ichidan, iAdjective, suru, kuru } = WORD_CLASSES;
 const has = (written: string, base: string, wordClass: string) =>

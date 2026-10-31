@@ -1,13 +1,14 @@
 import { segmentWord, type WordSegment } from "./align.ts";
+import { parseEnglishNumber, parseJapaneseNumber, readJapaneseNumber, writeJapaneseNumber } from "./numerals.ts";
 import {
+  type EraYear,
   eraOnDate,
   eraYearOf,
-  parseEraYear,
   formatEraYearJapanese,
   formatEraYearRomaji,
-  type EraYear,
+  parseEraYear,
 } from "./wareki.ts";
-import { parseJapaneseNumber, parseEnglishNumber, writeJapaneseNumber, readJapaneseNumber } from "./numerals.ts";
+
 const ElementBase = typeof HTMLElement === "undefined" ? (class {} as typeof HTMLElement) : HTMLElement;
 const common = ["lang", "theme", "size", "width", "label"];
 const isOn = (value: string | null, fallback = false): boolean =>
@@ -111,18 +112,18 @@ class TextTool extends ElementBase {
   #frame(): void {
     this.style.display = "block";
     this.style.maxWidth = "100%";
-    const width = Number(this.getAttribute("width")),
-      size = this.getAttribute("size"),
-      pixels =
-        this.hasAttribute("width") && Number.isFinite(width) && width > 0
-          ? Math.min(width, 2000)
-          : size === "small"
-            ? 320
-            : size === "large"
-              ? 640
-              : size === "medium"
-                ? 480
-                : null;
+    const width = Number(this.getAttribute("width"));
+    const size = this.getAttribute("size");
+    const pixels =
+      this.hasAttribute("width") && Number.isFinite(width) && width > 0
+        ? Math.min(width, 2000)
+        : size === "small"
+          ? 320
+          : size === "large"
+            ? 640
+            : size === "medium"
+              ? 480
+              : null;
     if (pixels !== null) {
       if (!this.#widthOwned) this.#widthBefore = this.style.width;
       this.#widthOwned = true;
@@ -150,9 +151,9 @@ class TextTool extends ElementBase {
   }
   #render(): void {
     this.#frame();
-    const doc = this.ownerDocument,
-      output = doc.createElement("div"),
-      style = doc.createElement("style");
+    const doc = this.ownerDocument;
+    const output = doc.createElement("div");
+    const style = doc.createElement("style");
     output.className = "hk-result";
     output.setAttribute("aria-live", "polite");
     this.setAttribute("data-hikidashi-embed", "");
@@ -161,17 +162,17 @@ class TextTool extends ElementBase {
     let result: HikidashiResult = null;
     try {
       if (this.kind === "furigana") {
-        const text = this.getAttribute("text") ?? "食べる",
-          reading = this.getAttribute("reading") ?? "たべる";
+        const text = this.getAttribute("text") ?? "食べる";
+        const reading = this.getAttribute("reading") ?? "たべる";
         result = segmentWord(text, reading);
         if (result !== null)
           for (const part of result) {
             if (part.kind !== "kanji") output.append(doc.createTextNode(part.text));
             else {
-              const ruby = doc.createElement("ruby"),
-                rt = doc.createElement("rt"),
-                left = doc.createElement("rp"),
-                right = doc.createElement("rp");
+              const ruby = doc.createElement("ruby");
+              const rt = doc.createElement("rt");
+              const left = doc.createElement("rp");
+              const right = doc.createElement("rp");
               ruby.append(doc.createTextNode(part.text));
               left.textContent = "(";
               right.textContent = ")";
@@ -193,8 +194,8 @@ class TextTool extends ElementBase {
               ? formatEraYearRomaji(result)
               : formatEraYearJapanese(result, { gannen: isOn(this.getAttribute("gannen"), true) });
       } else {
-        const value = (this.getAttribute("value") ?? "12345").trim(),
-          mode = this.getAttribute("mode") ?? "write";
+        const value = (this.getAttribute("value") ?? "12345").trim();
+        const mode = this.getAttribute("mode") ?? "write";
         const number = parseJapaneseNumber(value) ?? parseEnglishNumber(value);
         if (number !== null)
           result =

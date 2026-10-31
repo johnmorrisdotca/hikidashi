@@ -90,7 +90,7 @@ export const OTHERS = [
   },
 ];
 
-const escape = (text) =>
+const escapeHtml = (text) =>
   String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const capital = (text) => text[0].toUpperCase() + text.slice(1);
 
@@ -158,10 +158,10 @@ export function socialPage(one, picture) {
   .shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; }
   </style></head><body>
   <div class="words">
-    <h1>${escape(one.name)}${one.kana ? `<span lang="ja">${escape(one.kana)}</span>` : ""}</h1>
-    <p class="job">${escape(one.job)}</p>
-    <p class="pitch">${escape(one.pitch)}</p>
-    <div class="foot"><span>${escape(one.install)}</span><span>github.com/${escape(one.owner)}/${escape(one.id)}</span></div>
+    <h1>${escapeHtml(one.name)}${one.kana ? `<span lang="ja">${escapeHtml(one.kana)}</span>` : ""}</h1>
+    <p class="job">${escapeHtml(one.job)}</p>
+    <p class="pitch">${escapeHtml(one.pitch)}</p>
+    <div class="foot"><span>${escapeHtml(one.install)}</span><span>github.com/${escapeHtml(one.owner)}/${escapeHtml(one.id)}</span></div>
   </div>
   ${picture ? `<div class="shot"><img src="${picture}" alt=""></div>` : ""}
 </body></html>`;

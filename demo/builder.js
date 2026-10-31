@@ -1,7 +1,8 @@
+import { HIKIDASHI_EMBED_OPTION_KEYS, HikidashiEra, HikidashiFurigana, HikidashiNumerals } from "./dist/element.js";
 import { VERSION } from "./dist/index.js";
-import { HikidashiFurigana, HikidashiEra, HikidashiNumerals, HIKIDASHI_EMBED_OPTION_KEYS } from "./dist/element.js";
 import "./dist/element-define.js";
-import { familyEmbedBuilder, FAMILY_EMBED_BUILDER_WORDS } from "./family-embed-builder.js";
+import { FAMILY_EMBED_BUILDER_WORDS, familyEmbedBuilder } from "./family-embed-builder.js";
+
 const words = {
   en: {
     ...FAMILY_EMBED_BUILDER_WORDS.en,
@@ -162,14 +163,14 @@ const leftOut = {
 };
 let mounted;
 const page = globalThis.familyLanguage({
-    id: "hikidashi",
-    words,
-    onChange: () => {
-      docsLink();
-      mounted?.draw();
-    },
-  }),
-  heights = {};
+  id: "hikidashi",
+  words,
+  onChange: () => {
+    docsLink();
+    mounted?.draw();
+  },
+});
+const heights = {};
 const key = (maker, settings) => JSON.stringify([maker, settings]);
 const makers = {};
 for (const [name, required] of [

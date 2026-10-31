@@ -1,12 +1,12 @@
 // Builds the static demo for GitHub Pages into ./site: the page, written here from the family's
 // shared header and footer, with the family's stylesheet, Hikidashi's own, the page's script and the
 // compiled library beside it.
-import { cpSync, readFileSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 
 import { API_CSS, apiPage } from "./api.mjs";
 import {
-  FAMILY_SCRIPT,
   FAMILY_EMBED_BUILDER_WORDS,
+  FAMILY_SCRIPT,
   familyEmbedBuilder,
   familyFooter,
   familyHead,
@@ -28,16 +28,16 @@ const uses = [
   `segmentWord("食べる", "たべる")  // 食 た · べる (okurigana)`,
   `extractFromText({ text, known }).words  // 行きます is 行く, when your dictionary has 行く`,
 ];
-const escape = (text) =>
+const escapeHtml = (text) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 /** An option row: a label and the fields, with the help line the Help switch shows in either language. */
 const row = (help, content) =>
-  `<div class="fam-row" data-help-en="${escape(help[0])}" data-help-ja="${escape(help[1])}">${content}</div>`;
+  `<div class="fam-row" data-help-en="${escapeHtml(help[0])}" data-help-ja="${escapeHtml(help[1])}">${content}</div>`;
 const field = (name, key, value, { area = false, pair = false } = {}) =>
-  `${pair ? `<span class="pair">` : ""}<label class="fam-label" for="${name}" data-say="${key}"></label>${area ? `<textarea id="${name}" class="fam-field" data-testid="${name}" lang="ja" spellcheck="false" autocomplete="off" rows="3">${escape(value)}</textarea>` : `<input id="${name}" class="fam-field" data-testid="${name}" type="text" lang="ja" spellcheck="false" autocomplete="off" autocapitalize="off" value="${escape(value)}" />`}${pair ? "</span>" : ""}`;
+  `${pair ? `<span class="pair">` : ""}<label class="fam-label" for="${name}" data-say="${key}"></label>${area ? `<textarea id="${name}" class="fam-field" data-testid="${name}" lang="ja" spellcheck="false" autocomplete="off" rows="3">${escapeHtml(value)}</textarea>` : `<input id="${name}" class="fam-field" data-testid="${name}" type="text" lang="ja" spellcheck="false" autocomplete="off" autocapitalize="off" value="${escapeHtml(value)}" />`}${pair ? "</span>" : ""}`;
 const examples = (name, help) =>
-  `<div class="fam-seg" role="group" data-say-label="examples" id="${name}-examples" data-testid="${name}-examples" data-help-en="${escape(help[0])}" data-help-ja="${escape(help[1])}"></div>`;
+  `<div class="fam-seg" role="group" data-say-label="examples" id="${name}-examples" data-testid="${name}-examples" data-help-en="${escapeHtml(help[0])}" data-help-ja="${escapeHtml(help[1])}"></div>`;
 
 /** A drawer's panel: its title and import, what it does, what to type, the examples, the answer and the call. */
 const panel = ({
@@ -170,7 +170,7 @@ const page = `<!doctype html>
         <h2 id="more-title" data-say="moreTitle"></h2>
         <p data-say="moreText"></p>
         <ul class="uses">
-          ${uses.map((line) => `<li><code>${escape(line)}</code></li>`).join("\n          ")}
+          ${uses.map((line) => `<li><code>${escapeHtml(line)}</code></li>`).join("\n          ")}
         </ul>
       </section>
       ${familyFooter({ id })}

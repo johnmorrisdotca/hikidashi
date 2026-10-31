@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
-import { open, noSidewaysScroll } from "./demo.mjs";
+import { expect, test } from "@playwright/test";
+import { noSidewaysScroll, open } from "./demo.mjs";
 
 test("the family groups remain readable and translate on phones and desks", async ({ page }) => {
   const errors = await open(page);

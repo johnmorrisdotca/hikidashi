@@ -7,10 +7,11 @@
  * page imports only the one it needs: `@johnmorrisdotca/hikidashi/wareki`, `/numerals`, `/deinflect`,
  * `/align`, `/extract` and `/difficulty`.
  */
-export * from "./wareki.ts";
-export * from "./numerals.ts";
-export * from "./deinflect.ts";
+
 export * from "./align.ts";
-export * from "./extract.ts";
+export * from "./deinflect.ts";
 export * from "./difficulty.ts";
+export * from "./extract.ts";
+export * from "./numerals.ts";
 export { VERSION } from "./version.ts";
+export * from "./wareki.ts";

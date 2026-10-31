@@ -1,16 +1,14 @@
-import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 // The documents and the demo, held to the source. Plain JavaScript, so that reading files needs no Node types.
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import process from "node:process";
-
 import { describe, expect, it } from "vitest";
-
 import { WORDS } from "../demo/words.js";
-import * as everything from "./index.ts";
+import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 import { ALIGN_LIMITS } from "./align.ts";
 import { LONGEST_ENDING } from "./deinflect.ts";
 import { EXTRACT_LIMITS } from "./extract.ts";
+import * as everything from "./index.ts";
 import { LARGEST_JAPANESE_NUMBER } from "./numerals.ts";
 import { VERSION } from "./version.ts";
 import { JAPANESE_ERAS } from "./wareki.ts";

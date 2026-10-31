@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
-
-import * as everything from "./index.ts";
 import * as align from "./align.ts";
 import * as deinflect from "./deinflect.ts";
 import * as difficulty from "./difficulty.ts";
 import * as extract from "./extract.ts";
+import * as everything from "./index.ts";
 import * as numerals from "./numerals.ts";
 import * as wareki from "./wareki.ts";
 

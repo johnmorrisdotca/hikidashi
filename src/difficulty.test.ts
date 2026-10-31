@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { UNKNOWN_KANJI_COST, kanjiCost, kanjiIn, sentenceDifficulty } from "./difficulty.ts";
+import { kanjiCost, kanjiIn, sentenceDifficulty, UNKNOWN_KANJI_COST } from "./difficulty.ts";
 
 describe("kanjiCost", () => {
   it("costs an elementary grade its own year", () => {

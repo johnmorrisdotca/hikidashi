@@ -16,7 +16,7 @@
  * the noun 行き that its stem happens to spell. The package carries no dictionary of its own: `known`
  * is a Map from each word to the kinds of word it is, from yours.
  */
-import { LONGEST_ENDING, dictionaryForms, followsAsVerbStem, type WordClass } from "./deinflect.ts";
+import { dictionaryForms, followsAsVerbStem, LONGEST_ENDING, type WordClass } from "./deinflect.ts";
 
 /**
  * What a paste is held to: read to 20,000 characters and then cut, words of up to 8 characters, and at most 4,000

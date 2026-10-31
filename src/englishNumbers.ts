@@ -68,7 +68,7 @@ const SCALES: Record<string, number> = {
 
 /** A table's own entry for a word. A plain lookup would answer "constructor" and "toString" with a function. */
 const own = (table: Record<string, number>, word: string): number | undefined =>
-  Object.prototype.hasOwnProperty.call(table, word) ? table[word] : undefined;
+  Object.hasOwn(table, word) ? table[word] : undefined;
 
 /** Words that carry no value and are simply how the language joins numbers. */
 const FILLER = new Set(["and", "a"]);

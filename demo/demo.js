@@ -2,12 +2,13 @@
 // (`./dist/wareki.js`, `./dist/numerals.js` and so on, as a page that wants one drawer would). Type in a panel
 // and its answer is written as you type, from the package's own functions, in the language the header's
 // chooser picks. The page's words are set as text, never as HTML.
-import { eraOnDate, eraYearsOf, formatEraYearJapanese, formatEraYearRomaji, parseEraYear } from "./dist/wareki.js";
-import { parseEnglishNumber, parseJapaneseNumber, readJapaneseNumber, writeJapaneseNumber } from "./dist/numerals.js";
-import { dictionaryForms } from "./dist/deinflect.js";
+
 import { segmentWord } from "./dist/align.js";
-import { extractFromText } from "./dist/extract.js";
+import { dictionaryForms } from "./dist/deinflect.js";
 import { kanjiCost, kanjiIn, sentenceDifficulty } from "./dist/difficulty.js";
+import { extractFromText } from "./dist/extract.js";
+import { parseEnglishNumber, parseJapaneseNumber, readJapaneseNumber, writeJapaneseNumber } from "./dist/numerals.js";
+import { eraOnDate, eraYearsOf, formatEraYearJapanese, formatEraYearRomaji, parseEraYear } from "./dist/wareki.js";
 import { WORDS } from "./words.js";
 
 // The grades of a few elementary-school kanji (the Ministry of Education's list), typed in for the demo. The package
@@ -58,7 +59,7 @@ docsLink(language.lang);
 const say = (key, values) => {
   const word = WORDS[language.lang][key];
   return typeof word === "string" && values !== undefined
-    ? word.replace(/\{(\w+)\}/g, (whole, name) => String(values[name] ?? ""))
+    ? word.replace(/\{(\w+)\}/g, (_whole, name) => String(values[name] ?? ""))
     : word;
 };
 const ja = () => language.lang === "ja";
@@ -373,7 +374,9 @@ function press() {
     const now = panel.inputs.map((id) => $(id).value).join("|");
     $(`${name}-examples`)
       .querySelectorAll("button")
-      .forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.value === now)));
+      .forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.value === now));
+      });
   }
 }
 
