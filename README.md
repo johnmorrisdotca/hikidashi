@@ -736,7 +736,7 @@ Please follow the [code of conduct](./CODE_OF_CONDUCT.md). Text that makes a fun
 
 ## Changes
 
-See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.1.0, adds the furigana, era-year and numeral tools as elements with the standard embed attributes, the shared embed builder, and the [documentation site](https://johnmorrisdotca.github.io/hikidashi/docs/) with a checked example for every export.
+See [CHANGELOG.md](./CHANGELOG.md). The latest release, 1.1.1, changes nothing a player sees.github.io/hikidashi/docs/) with a checked example for every export.
 
 ## Licence
 
