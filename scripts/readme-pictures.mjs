@@ -9,7 +9,14 @@ const READY = 'main[data-ready="true"]';
 const panel = (name) => `[data-testid="${name}-panel"]`;
 
 /** A drawer's panel on its own: its box to type in, its examples, the answer and the call that made it. */
-const drawer = (name, extra = {}) => ({ subject: name, views: ["desk"], url: "/?lang=en&help=off", ready: READY, target: panel(name), ...extra });
+const drawer = (name, extra = {}) => ({
+  subject: name,
+  views: ["desk"],
+  url: "/?lang=en&help=off",
+  ready: READY,
+  target: panel(name),
+  ...extra,
+});
 
 await takePictures({
   shots: [

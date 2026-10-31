@@ -6,7 +6,9 @@ import { at, open, tap, type } from "./demo.mjs";
 const answer = (page, name) => page.locator(at(`${name}-answer`));
 const call = (page, name) => page.locator(at(`${name}-call`));
 
-test("era years: an era year gives the Western year, a year gives both eras of a changeover, a day gives its era", async ({ page }) => {
+test("era years: an era year gives the Western year, a year gives both eras of a changeover, a day gives its era", async ({
+  page,
+}) => {
   const errors = await open(page);
   await expect(answer(page, "wareki")).toContainText("2024");
   await expect(answer(page, "wareki")).toContainText("令和6年 · Reiwa 6");
@@ -27,7 +29,9 @@ test("era years: an era year gives the Western year, a year gives both eras of a
   expect(errors).toEqual([]);
 });
 
-test("kanji numerals: kanji, digits and mixtures are read and written back, and what is not a number says so", async ({ page }) => {
+test("kanji numerals: kanji, digits and mixtures are read and written back, and what is not a number says so", async ({
+  page,
+}) => {
   const errors = await open(page);
   await expect(answer(page, "numerals")).toContainText("25,000");
   await expect(answer(page, "numerals")).toContainText("二万五千");
@@ -48,7 +52,9 @@ test("kanji numerals: kanji, digits and mixtures are read and written back, and 
   expect(errors).toEqual([]);
 });
 
-test("dictionary forms: the likeliest form leads, the irregular verbs are found, and a dictionary form is not conjugated", async ({ page }) => {
+test("dictionary forms: the likeliest form leads, the irregular verbs are found, and a dictionary form is not conjugated", async ({
+  page,
+}) => {
   const errors = await open(page);
   await expect(answer(page, "deinflect").locator("dt").first()).toHaveText("行く");
   await expect(answer(page, "deinflect").locator("dd").first()).toHaveText("godan verb");
@@ -64,7 +70,9 @@ test("dictionary forms: the likeliest form leads, the irregular verbs are found,
   expect(errors).toEqual([]);
 });
 
-test("reading alignment: the reading is shared out, the okurigana marked, and a reading that does not fit is left out", async ({ page }) => {
+test("reading alignment: the reading is shared out, the okurigana marked, and a reading that does not fit is left out", async ({
+  page,
+}) => {
   const errors = await open(page);
   const segments = answer(page, "align").locator(".segment");
   await expect(segments).toHaveCount(2);
@@ -95,7 +103,9 @@ test("pasted text: the dictionary's words come out as dictionary forms, then eve
   expect(errors).toEqual([]);
 });
 
-test("sentence difficulty: the score is the length and three times the hardest kanji, and a kanji not in the table counts as unknown", async ({ page }) => {
+test("sentence difficulty: the score is the length and three times the hardest kanji, and a kanji not in the table counts as unknown", async ({
+  page,
+}) => {
   const errors = await open(page);
   await expect(answer(page, "difficulty")).toContainText("14");
   await expect(answer(page, "difficulty")).toContainText("飲 (cost 3)");

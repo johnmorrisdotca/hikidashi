@@ -154,7 +154,11 @@ describe("the other forms", () => {
 
   /* 食べる is also the potential of a verb 食ぶ: a guess, and the caller's dictionary says there is no such verb. */
   it("never offers the written form itself, and finds nothing in a な adjective's forms or text that is not Japanese", () => {
-    for (const text of ["食べる", "高い", "行く", "静かです"]) expect(dictionaryForms(text).map((form) => form.base), text).not.toContain(text);
+    for (const text of ["食べる", "高い", "行く", "静かです"])
+      expect(
+        dictionaryForms(text).map((form) => form.base),
+        text,
+      ).not.toContain(text);
     for (const text of ["静かです", "water", "123", "ABC"]) expect(dictionaryForms(text), text).toEqual([]);
   });
 });
@@ -165,7 +169,8 @@ describe("empty and odd input", () => {
   });
 
   it("finds nothing in a single character", () => {
-    for (const character of ["た", "て", "る", "い", "く", "ま"]) expect(dictionaryForms(character), character).toEqual([]);
+    for (const character of ["た", "て", "る", "い", "く", "ま"])
+      expect(dictionaryForms(character), character).toEqual([]);
   });
 
   it("finishes at once on a long chain of endings, and on a very long string", () => {

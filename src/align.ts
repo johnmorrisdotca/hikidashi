@@ -201,7 +201,11 @@ export function segmentWord(word: string, reading: string): WordSegment[] | null
   return runs.map((run, index) => ({
     text: run.text,
     reading: shares[index]!,
-    kind: run.han ? SEGMENT_KINDS.kanji : index > 0 && index === runs.length - 1 ? SEGMENT_KINDS.okurigana : SEGMENT_KINDS.kana,
+    kind: run.han
+      ? SEGMENT_KINDS.kanji
+      : index > 0 && index === runs.length - 1
+        ? SEGMENT_KINDS.okurigana
+        : SEGMENT_KINDS.kana,
   }));
 }
 

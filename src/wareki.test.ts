@@ -150,7 +150,8 @@ describe("the era table", () => {
   });
 });
 
-const label = (found: { era: { kanji: string }; year: number } | null) => (found === null ? null : `${found.era.kanji}${found.year}`);
+const label = (found: { era: { kanji: string }; year: number } | null) =>
+  found === null ? null : `${found.era.kanji}${found.year}`;
 
 describe("a Western year to its era year", () => {
   it.each([
@@ -189,7 +190,10 @@ describe("a Western year to its era year", () => {
     for (const era of JAPANESE_ERAS) {
       for (let year = 1; year <= (era.lastYear ?? 99); year += 1) {
         const western = westernYearFor(era, year)!;
-        expect(eraYearsOf(western).some((found) => found.era === era && found.year === year), `${era.kanji}${year}`).toBe(true);
+        expect(
+          eraYearsOf(western).some((found) => found.era === era && found.year === year),
+          `${era.kanji}${year}`,
+        ).toBe(true);
       }
     }
   });
@@ -224,7 +228,18 @@ describe("the days an era changes on", () => {
   });
 
   it("answers nothing for a day that is not on the calendar, or not written as one", () => {
-    for (const day of ["2023-02-30", "2023-13-01", "2023-00-10", "2023-1-5", "20230105", "令和6年", "", "x", "1989-01-08T00:00:00"]) expect(eraOnDate(day), day).toBeNull();
+    for (const day of [
+      "2023-02-30",
+      "2023-13-01",
+      "2023-00-10",
+      "2023-1-5",
+      "20230105",
+      "令和6年",
+      "",
+      "x",
+      "1989-01-08T00:00:00",
+    ])
+      expect(eraOnDate(day), day).toBeNull();
     expect(eraOnDate(new Date(Number.NaN))).toBeNull();
     expect(eraOnDate(undefined as unknown as string)).toBeNull();
   });
@@ -237,12 +252,14 @@ describe("the days an era changes on", () => {
 
 describe("the era table's dates", () => {
   it("start each era the day after the last one ended, with the years matching the dates", () => {
-    const day = (iso: string) => Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1, Number(iso.slice(8, 10)));
+    const day = (iso: string) =>
+      Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1, Number(iso.slice(8, 10)));
     for (let index = 0; index < JAPANESE_ERAS.length; index += 1) {
       const era = JAPANESE_ERAS[index]!;
       expect(Number(era.startDate.slice(0, 4)), era.kanji).toBe(era.startYear);
       if (index > 0) expect(day(JAPANESE_ERAS[index - 1]!.endDate!) + 86_400_000, era.kanji).toBe(day(era.startDate));
-      if (era.endDate !== null) expect(Number(era.endDate.slice(0, 4)) - era.startYear + 1, era.kanji).toBe(era.lastYear);
+      if (era.endDate !== null)
+        expect(Number(era.endDate.slice(0, 4)) - era.startYear + 1, era.kanji).toBe(era.lastYear);
       else expect(index).toBe(JAPANESE_ERAS.length - 1);
     }
   });

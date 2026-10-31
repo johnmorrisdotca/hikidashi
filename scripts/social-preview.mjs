@@ -58,13 +58,40 @@ export const PROPOSED_JOBS = {
 
 /** The packages outside FAMILY that are made the same way: their name as written, their Japanese name, a line on each, and where the code is. */
 export const OTHERS = [
-  { id: "address-plus", name: "address-plus", kana: "", pitch: "parses and normalises US and Canadian addresses, with USPS and Canada Post formats and bilingual abbreviations", owner: "johnmorrisdotca" },
-  { id: "kuni", name: "Kuni", kana: "国", pitch: "every country and its states, provinces and prefectures, with ISO 3166 codes and names in English and Japanese", owner: "johnmorrisdotca" },
-  { id: "hata", name: "Hata", kana: "旗", pitch: "flags as SVG: every country, and the regions of Japan, Canada and the United States, keyed by ISO 3166", owner: "johnmorrisdotca" },
-  { id: "rest-in-pieces", name: "REST in Pieces", kana: "", pitch: "a REST service that serves realistic, repeatable fake data for building and testing client applications", owner: "spxis" },
+  {
+    id: "address-plus",
+    name: "address-plus",
+    kana: "",
+    pitch:
+      "parses and normalises US and Canadian addresses, with USPS and Canada Post formats and bilingual abbreviations",
+    owner: "johnmorrisdotca",
+  },
+  {
+    id: "kuni",
+    name: "Kuni",
+    kana: "国",
+    pitch:
+      "every country and its states, provinces and prefectures, with ISO 3166 codes and names in English and Japanese",
+    owner: "johnmorrisdotca",
+  },
+  {
+    id: "hata",
+    name: "Hata",
+    kana: "旗",
+    pitch: "flags as SVG: every country, and the regions of Japan, Canada and the United States, keyed by ISO 3166",
+    owner: "johnmorrisdotca",
+  },
+  {
+    id: "rest-in-pieces",
+    name: "REST in Pieces",
+    kana: "",
+    pitch: "a REST service that serves realistic, repeatable fake data for building and testing client applications",
+    owner: "spxis",
+  },
 ];
 
-const escape = (text) => String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const escape = (text) =>
+  String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const capital = (text) => text[0].toUpperCase() + text.slice(1);
 
 /** Everything the picture says about one package. */
@@ -77,7 +104,10 @@ export function describePackage(id, projects) {
   const job = (existsSync(siteFile) ? JSON.parse(readFileSync(siteFile, "utf8")).job : null) ?? PROPOSED_JOBS[id];
   const owner = other?.owner ?? "johnmorrisdotca";
   return {
-    id, owner, checkout, job,
+    id,
+    owner,
+    checkout,
+    job,
     name: member?.name ?? other.name,
     kana: member?.kana ?? other.kana,
     pitch: capital(member ? FAMILY_PITCH[id] : other.pitch),
@@ -89,7 +119,8 @@ export function describePackage(id, projects) {
 async function pictureOf(one) {
   for (const name of ["hero-desk-light.webp", "hero-desk-light.png", "playground.png"]) {
     const file = join(one.checkout, "docs", "images", name);
-    if (existsSync(file)) return `data:image/${name.endsWith("png") ? "png" : "webp"};base64,${readFileSync(file).toString("base64")}`;
+    if (existsSync(file))
+      return `data:image/${name.endsWith("png") ? "png" : "webp"};base64,${readFileSync(file).toString("base64")}`;
   }
   const remote = [
     `https://raw.githubusercontent.com/${one.owner}/${one.id}/main/docs/images/hero-desk-light.webp`,
@@ -138,7 +169,10 @@ export function socialPage(one, picture) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const value = (flag) => { const at = args.indexOf(flag); return at >= 0 ? args.splice(at, 2)[1] : null; };
+  const value = (flag) => {
+    const at = args.indexOf(flag);
+    return at >= 0 ? args.splice(at, 2)[1] : null;
+  };
   const out = value("--out");
   const projects = value("--projects") ?? join(homedir(), "Projects");
   if (!out) throw new Error("--out <folder> is required");

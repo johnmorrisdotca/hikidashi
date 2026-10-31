@@ -10,13 +10,37 @@
  */
 
 const ONES: Record<string, number> = {
-  zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
-  ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16,
-  seventeen: 17, eighteen: 18, nineteen: 19,
+  zero: 0,
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  eleven: 11,
+  twelve: 12,
+  thirteen: 13,
+  fourteen: 14,
+  fifteen: 15,
+  sixteen: 16,
+  seventeen: 17,
+  eighteen: 18,
+  nineteen: 19,
 };
 
 const TENS: Record<string, number> = {
-  twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90,
+  twenty: 20,
+  thirty: 30,
+  forty: 40,
+  fifty: 50,
+  sixty: 60,
+  seventy: 70,
+  eighty: 80,
+  ninety: 90,
 };
 
 /** Multiplies what has been counted so far rather than adding to it. */
@@ -43,7 +67,8 @@ const SCALES: Record<string, number> = {
 };
 
 /** A table's own entry for a word. A plain lookup would answer "constructor" and "toString" with a function. */
-const own = (table: Record<string, number>, word: string): number | undefined => (Object.prototype.hasOwnProperty.call(table, word) ? table[word] : undefined);
+const own = (table: Record<string, number>, word: string): number | undefined =>
+  Object.prototype.hasOwnProperty.call(table, word) ? table[word] : undefined;
 
 /** Words that carry no value and are simply how the language joins numbers. */
 const FILLER = new Set(["and", "a"]);

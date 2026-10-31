@@ -79,11 +79,56 @@ const OPEN_ERA_LIMIT = 99;
  * ```
  */
 export const JAPANESE_ERAS: readonly JapaneseEra[] = [
-  { kanji: "明治", romaji: "Meiji", reading: "めいじ", startYear: 1868, lastYear: 45, startDate: "1868-10-23", endDate: "1912-07-29", spellings: ["meiji"] },
-  { kanji: "大正", romaji: "Taisho", reading: "たいしょう", startYear: 1912, lastYear: 15, startDate: "1912-07-30", endDate: "1926-12-24", spellings: ["taisho", "taishou", "taishō"] },
-  { kanji: "昭和", romaji: "Showa", reading: "しょうわ", startYear: 1926, lastYear: 64, startDate: "1926-12-25", endDate: "1989-01-07", spellings: ["showa", "shouwa", "shōwa"] },
-  { kanji: "平成", romaji: "Heisei", reading: "へいせい", startYear: 1989, lastYear: 31, startDate: "1989-01-08", endDate: "2019-04-30", spellings: ["heisei"] },
-  { kanji: "令和", romaji: "Reiwa", reading: "れいわ", startYear: 2019, lastYear: null, startDate: "2019-05-01", endDate: null, spellings: ["reiwa"] },
+  {
+    kanji: "明治",
+    romaji: "Meiji",
+    reading: "めいじ",
+    startYear: 1868,
+    lastYear: 45,
+    startDate: "1868-10-23",
+    endDate: "1912-07-29",
+    spellings: ["meiji"],
+  },
+  {
+    kanji: "大正",
+    romaji: "Taisho",
+    reading: "たいしょう",
+    startYear: 1912,
+    lastYear: 15,
+    startDate: "1912-07-30",
+    endDate: "1926-12-24",
+    spellings: ["taisho", "taishou", "taishō"],
+  },
+  {
+    kanji: "昭和",
+    romaji: "Showa",
+    reading: "しょうわ",
+    startYear: 1926,
+    lastYear: 64,
+    startDate: "1926-12-25",
+    endDate: "1989-01-07",
+    spellings: ["showa", "shouwa", "shōwa"],
+  },
+  {
+    kanji: "平成",
+    romaji: "Heisei",
+    reading: "へいせい",
+    startYear: 1989,
+    lastYear: 31,
+    startDate: "1989-01-08",
+    endDate: "2019-04-30",
+    spellings: ["heisei"],
+  },
+  {
+    kanji: "令和",
+    romaji: "Reiwa",
+    reading: "れいわ",
+    startYear: 2019,
+    lastYear: null,
+    startDate: "2019-05-01",
+    endDate: null,
+    spellings: ["reiwa"],
+  },
 ];
 
 /**
@@ -178,7 +223,11 @@ const ERA_QUERY = /^(明治|大正|昭和|平成|令和|[a-zA-ZĀ-ſ]+)\s*(元|\
  * ```
  */
 export function parseEraYear(raw: string): EraYear | null {
-  const query = toHalfWidthDigits(String(raw ?? "").normalize("NFC").trim());
+  const query = toHalfWidthDigits(
+    String(raw ?? "")
+      .normalize("NFC")
+      .trim(),
+  );
   const match = ERA_QUERY.exec(query);
   if (!match) return null;
 

@@ -182,7 +182,11 @@ function followedByStemEnding(characters: string[], end: number): boolean {
 function wordAt(characters: string[], index: number, known: KnownWords): { length: number; word: string } | null {
   for (let length = Math.min(LONGEST_WRITTEN, characters.length - index); length >= 2; length -= 1) {
     const written = characters.slice(index, index + length).join("");
-    if (length <= EXTRACT_LIMITS.wordLength && known.has(written) && !followedByStemEnding(characters, index + length)) {
+    if (
+      length <= EXTRACT_LIMITS.wordLength &&
+      known.has(written) &&
+      !followedByStemEnding(characters, index + length)
+    ) {
       return { length, word: written };
     }
     for (const { base, wordClass } of conjugatedForms(written)) {
@@ -239,5 +243,9 @@ export function extractFromText({ text, known = new Map() }: ExtractInput): Extr
     kanji.push(character);
   }
 
-  return { words, kanji, stats: { characters: Array.from(safe).length, truncated, kanji: kanji.length, words: words.length } };
+  return {
+    words,
+    kanji,
+    stats: { characters: Array.from(safe).length, truncated, kanji: kanji.length, words: words.length },
+  };
 }

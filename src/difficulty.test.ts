@@ -9,12 +9,8 @@ describe("kanjiCost", () => {
   });
 
   it("puts the rest of jōyō above elementary and name kanji above that", () => {
-    expect(kanjiCost({ grade: 8, frequencyRank: null })).toBeGreaterThan(
-      kanjiCost({ grade: 6, frequencyRank: null }),
-    );
-    expect(kanjiCost({ grade: 9, frequencyRank: null })).toBeGreaterThan(
-      kanjiCost({ grade: 8, frequencyRank: null }),
-    );
+    expect(kanjiCost({ grade: 8, frequencyRank: null })).toBeGreaterThan(kanjiCost({ grade: 6, frequencyRank: null }));
+    expect(kanjiCost({ grade: 9, frequencyRank: null })).toBeGreaterThan(kanjiCost({ grade: 8, frequencyRank: null }));
   });
 
   it("falls back to how common an ungraded character is", () => {

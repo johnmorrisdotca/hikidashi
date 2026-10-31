@@ -25,7 +25,8 @@ describe("what a paste is cut down to before anything reads it", () => {
   /* A paste is anything at all: control characters and invisible marks go. */
   it("drops what cannot be read", () => {
     const { text } = sanitizePastedText("水\u0000火\u200b土\u001b[31m\u202e木");
-    for (const bad of ["\u0000", "\u001b", "\u200b", "\u202e"]) expect(text.includes(bad), JSON.stringify(bad)).toBe(false);
+    for (const bad of ["\u0000", "\u001b", "\u200b", "\u202e"])
+      expect(text.includes(bad), JSON.stringify(bad)).toBe(false);
     expect(text).toContain("水");
     expect(text).toContain("木");
   });
@@ -88,7 +89,11 @@ describe("what the dictionary is asked about", () => {
 
 describe("empty and odd input", () => {
   it("finds nothing in an empty paste, and counts it", () => {
-    expect(extractFromText({ text: "", known })).toEqual({ words: [], kanji: [], stats: { characters: 0, truncated: false, kanji: 0, words: 0 } });
+    expect(extractFromText({ text: "", known })).toEqual({
+      words: [],
+      kanji: [],
+      stats: { characters: 0, truncated: false, kanji: 0, words: 0 },
+    });
     expect(extractFromText({ text: "   \n\t " }).words).toEqual([]);
     expect(wordCandidates("")).toEqual([]);
   });
@@ -125,7 +130,15 @@ describe("empty and odd input", () => {
   });
 
   it("never mistakes a word for the stem of a verb after a break in the text", () => {
-    expect(extractFromText({ text: "行き\n行きます", known: new Map([["行き", []], ["行く", [WORD_CLASSES.godan]]]) }).words).toEqual(["行き", "行く"]);
+    expect(
+      extractFromText({
+        text: "行き\n行きます",
+        known: new Map([
+          ["行き", []],
+          ["行く", [WORD_CLASSES.godan]],
+        ]),
+      }).words,
+    ).toEqual(["行き", "行く"]);
   });
 
   it("reads a cap's worth of kana, a worst case for the matching, in a moment", () => {

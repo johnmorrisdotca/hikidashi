@@ -114,6 +114,9 @@ export function kanjiIn(text: string): string[] {
  */
 export function sentenceDifficulty(text: string, costs: ReadonlyMap<string, number>): number {
   const characters = kanjiIn(text);
-  const hardest = characters.reduce((worst, character) => Math.max(worst, costs.get(character) ?? UNKNOWN_KANJI_COST), 0);
+  const hardest = characters.reduce(
+    (worst, character) => Math.max(worst, costs.get(character) ?? UNKNOWN_KANJI_COST),
+    0,
+  );
   return [...String(text ?? "")].length + hardest * HARDEST_WEIGHT;
 }

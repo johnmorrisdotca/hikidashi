@@ -17,7 +17,11 @@ const GRADES = {
   2: "語食電行来毎曜話読買強京東",
   3: "飲勉待駅",
 };
-const COSTS = new Map(Object.entries(GRADES).flatMap(([grade, kanji]) => [...kanji].map((one) => [one, kanjiCost({ grade: Number(grade), frequencyRank: null })])));
+const COSTS = new Map(
+  Object.entries(GRADES).flatMap(([grade, kanji]) =>
+    [...kanji].map((one) => [one, kanjiCost({ grade: Number(grade), frequencyRank: null })]),
+  ),
+);
 
 // A short dictionary typed in for the demo, with the kinds of word each is, as `extractFromText` takes it.
 const DICTIONARY = new Map([
@@ -37,13 +41,25 @@ const DICTIONARY = new Map([
 ]);
 
 // The header's link to the documentation opens it in the page's language.
-const docsLink = (lang) => document.querySelector('header a[href^="docs/"]')?.setAttribute("href", lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
-const language = familyLanguage({ id: "hikidashi", words: WORDS, onChange: (lang) => { docsLink(lang); render(); } });
+const docsLink = (lang) =>
+  document
+    .querySelector('header a[href^="docs/"]')
+    ?.setAttribute("href", lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
+const language = familyLanguage({
+  id: "hikidashi",
+  words: WORDS,
+  onChange: (lang) => {
+    docsLink(lang);
+    render();
+  },
+});
 docsLink(language.lang);
 /** A line of the page in its language, with each `{name}` filled in from `values`. */
 const say = (key, values) => {
   const word = WORDS[language.lang][key];
-  return typeof word === "string" && values !== undefined ? word.replace(/\{(\w+)\}/g, (whole, name) => String(values[name] ?? "")) : word;
+  return typeof word === "string" && values !== undefined
+    ? word.replace(/\{(\w+)\}/g, (whole, name) => String(values[name] ?? ""))
+    : word;
 };
 const ja = () => language.lang === "ja";
 const $ = (id) => document.getElementById(id);
@@ -98,17 +114,26 @@ const quote = (text) => JSON.stringify(text);
 // ----- wareki ------------------------------------------------------------------------------------------------
 
 const eraName = (era) => (ja() ? `${era.kanji}（${era.reading}）` : `${era.kanji} ${era.romaji}`);
-const eraYearText = (found) => `${formatEraYearJapanese(found, { gannen: true })}${ja() ? "" : ` · ${formatEraYearRomaji(found)}`}`;
+const eraYearText = (found) =>
+  `${formatEraYearJapanese(found, { gannen: true })}${ja() ? "" : ` · ${formatEraYearRomaji(found)}`}`;
 
 function wareki() {
   const text = $("wareki-input").value.trim();
   const out = $("wareki-answer");
   const pairs = [];
-  const sayEra = (era) => [[say("wareki_reading"), eraName(era)], [say("wareki_began"), era.startDate], [say("wareki_ended"), era.endDate ?? say("wareki_still")]];
+  const sayEra = (era) => [
+    [say("wareki_reading"), eraName(era)],
+    [say("wareki_began"), era.startDate],
+    [say("wareki_ended"), era.endDate ?? say("wareki_still")],
+  ];
   let called = `parseEraYear(${quote(text)})`;
   const era = parseEraYear(text);
   if (era !== null) {
-    pairs.push([say("wareki_year"), String(era.westernYear)], [say("wareki_era"), eraYearText(era)], ...sayEra(era.era));
+    pairs.push(
+      [say("wareki_year"), String(era.westernYear)],
+      [say("wareki_era"), eraYearText(era)],
+      ...sayEra(era.era),
+    );
     // 1989 and 2019 are two eras' years: say so.
     const both = eraYearsOf(era.westernYear);
     if (both.length > 1) pairs.push(["", say("wareki_both")]);
@@ -168,8 +193,22 @@ function deinflect() {
   const out = $("deinflect-answer");
   const forms = dictionaryForms(text);
   if (forms.length === 0) note(out, say("deinflect_none"));
-  else facts(out, forms.map(({ base, wordClass }) => [base, say("kinds")[wordClass]]));
-  show("deinflect-call", `dictionaryForms(${quote(text)})  // ${forms.length === 0 ? "[]" : `[${forms.slice(0, 2).map((form) => `{ base: ${quote(form.base)}, wordClass: ${quote(form.wordClass)} }`).join(", ")}${forms.length > 2 ? ", …" : ""}]`}`);
+  else
+    facts(
+      out,
+      forms.map(({ base, wordClass }) => [base, say("kinds")[wordClass]]),
+    );
+  show(
+    "deinflect-call",
+    `dictionaryForms(${quote(text)})  // ${
+      forms.length === 0
+        ? "[]"
+        : `[${forms
+            .slice(0, 2)
+            .map((form) => `{ base: ${quote(form.base)}, wordClass: ${quote(form.wordClass)} }`)
+            .join(", ")}${forms.length > 2 ? ", …" : ""}]`
+    }`,
+  );
 }
 
 // ----- align -------------------------------------------------------------------------------------------------
@@ -199,7 +238,10 @@ function align() {
     }
     out.replaceChildren(wrap);
   }
-  show("align-call", `segmentWord(${quote(word)}, ${quote(reading)})  // ${segments === null ? "null" : segments.map((segment) => `${segment.text}:${segment.reading}`).join(" ")}`);
+  show(
+    "align-call",
+    `segmentWord(${quote(word)}, ${quote(reading)})  // ${segments === null ? "null" : segments.map((segment) => `${segment.text}:${segment.reading}`).join(" ")}`,
+  );
 }
 
 // ----- extract -----------------------------------------------------------------------------------------------
@@ -217,7 +259,10 @@ function extract() {
   line.className = "fam-fine";
   line.textContent = say("extract_stats", { ...stats, cut: stats.truncated ? say("extract_cut") : "" });
   out.append(line);
-  show("extract-call", `extractFromText({ text, known })  // { words: [${words.map(quote).join(", ")}], kanji: ${kanji.length} }`);
+  show(
+    "extract-call",
+    `extractFromText({ text, known })  // { words: [${words.map(quote).join(", ")}], kanji: ${kanji.length} }`,
+  );
 }
 
 // ----- difficulty --------------------------------------------------------------------------------------------
@@ -228,13 +273,31 @@ function difficulty() {
   const score = sentenceDifficulty(text, COSTS);
   const found = kanjiIn(text);
   const length = Array.from(text).length;
-  const hardest = found.reduce((worst, one) => ((COSTS.get(one) ?? 20) > (COSTS.get(worst) ?? 20) ? one : worst), found[0] ?? "");
+  const hardest = found.reduce(
+    (worst, one) => ((COSTS.get(one) ?? 20) > (COSTS.get(worst) ?? 20) ? one : worst),
+    found[0] ?? "",
+  );
   const pairs = [
     [say("difficulty_score"), String(score)],
     [say("difficulty_length"), String(length)],
-    [say("difficulty_hardest"), found.length === 0 ? say("difficulty_none") : `${hardest} (${COSTS.has(hardest) ? say("difficulty_cost", { cost: COSTS.get(hardest) }) : say("difficulty_unknown")})`],
+    [
+      say("difficulty_hardest"),
+      found.length === 0
+        ? say("difficulty_none")
+        : `${hardest} (${COSTS.has(hardest) ? say("difficulty_cost", { cost: COSTS.get(hardest) }) : say("difficulty_unknown")})`,
+    ],
   ];
-  if (found.length > 0) pairs.push([say("extract_kanji"), chips(found.map((one) => ({ text: one, small: COSTS.has(one) ? String(COSTS.get(one)) : "?", tone: COSTS.has(one) ? undefined : "bad" })))]);
+  if (found.length > 0)
+    pairs.push([
+      say("extract_kanji"),
+      chips(
+        found.map((one) => ({
+          text: one,
+          small: COSTS.has(one) ? String(COSTS.get(one)) : "?",
+          tone: COSTS.has(one) ? undefined : "bad",
+        })),
+      ),
+    ]);
   facts(out, pairs);
   show("difficulty-call", `sentenceDifficulty(${quote(text)}, costs)  // ${score}`);
 }
@@ -242,12 +305,42 @@ function difficulty() {
 // ----- the page ----------------------------------------------------------------------------------------------
 
 const PANELS = {
-  wareki: { run: wareki, inputs: ["wareki-input"], examples: ["令和6年", "Heisei 3", "昭和元年", "1989", "2019-05-01"] },
-  numerals: { run: numerals, inputs: ["numerals-input"], examples: ["2万5千", "一億二千万", "1億2000万", "120000000", "five hundred", "5 man", "壱万"] },
-  deinflect: { run: deinflect, inputs: ["deinflect-input"], examples: ["行きました", "食べさせられませんでした", "来なかった", "しています", "高くて", "きた"] },
-  align: { run: align, inputs: ["align-word", "align-reading"], examples: [["食べる", "たべる"], ["形が合う", "かたちがあう"], ["絵日記", "えにっき"], ["引き出し", "ひきだし"], ["食べる", "たべた"]] },
-  extract: { run: extract, inputs: ["extract-input"], examples: ["先生と学校へ行きます。毎日日本語を勉強しています。", "東京行きの電車に乗った。", "友達が来ました。"] },
-  difficulty: { run: difficulty, inputs: ["difficulty-input"], examples: ["みずをのむ。", "水を飲む。", "毎日日本語を勉強しています。", "鬱の鰐"] },
+  wareki: {
+    run: wareki,
+    inputs: ["wareki-input"],
+    examples: ["令和6年", "Heisei 3", "昭和元年", "1989", "2019-05-01"],
+  },
+  numerals: {
+    run: numerals,
+    inputs: ["numerals-input"],
+    examples: ["2万5千", "一億二千万", "1億2000万", "120000000", "five hundred", "5 man", "壱万"],
+  },
+  deinflect: {
+    run: deinflect,
+    inputs: ["deinflect-input"],
+    examples: ["行きました", "食べさせられませんでした", "来なかった", "しています", "高くて", "きた"],
+  },
+  align: {
+    run: align,
+    inputs: ["align-word", "align-reading"],
+    examples: [
+      ["食べる", "たべる"],
+      ["形が合う", "かたちがあう"],
+      ["絵日記", "えにっき"],
+      ["引き出し", "ひきだし"],
+      ["食べる", "たべた"],
+    ],
+  },
+  extract: {
+    run: extract,
+    inputs: ["extract-input"],
+    examples: ["先生と学校へ行きます。毎日日本語を勉強しています。", "東京行きの電車に乗った。", "友達が来ました。"],
+  },
+  difficulty: {
+    run: difficulty,
+    inputs: ["difficulty-input"],
+    examples: ["みずをのむ。", "水を飲む。", "毎日日本語を勉強しています。", "鬱の鰐"],
+  },
 };
 
 function fillExamples() {
@@ -278,7 +371,9 @@ function fillExamples() {
 function press() {
   for (const [name, panel] of Object.entries(PANELS)) {
     const now = panel.inputs.map((id) => $(id).value).join("|");
-    $(`${name}-examples`).querySelectorAll("button").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.value === now)));
+    $(`${name}-examples`)
+      .querySelectorAll("button")
+      .forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.value === now)));
   }
 }
 

@@ -22,11 +22,17 @@ describe("the entries", () => {
   });
 
   it("work together: a pasted sentence, read through a dictionary, then aligned and scored", () => {
-    const dictionary = new Map([["勉強する", [deinflect.WORD_CLASSES.suru]], ["日本語", []]]);
+    const dictionary = new Map([
+      ["勉強する", [deinflect.WORD_CLASSES.suru]],
+      ["日本語", []],
+    ]);
     const { words, kanji } = everything.extractFromText({ text: "日本語を勉強しています", known: dictionary });
     expect(words).toEqual(["日本語", "勉強する"]);
     const costs = new Map(kanji.map((one) => [one, 3]));
     expect(everything.sentenceDifficulty("日本語を勉強しています", costs)).toBe(11 + 9);
-    expect(everything.segmentWord("勉強する", "べんきょうする")?.map((segment) => segment.reading)).toEqual(["べんきょう", "する"]);
+    expect(everything.segmentWord("勉強する", "べんきょうする")?.map((segment) => segment.reading)).toEqual([
+      "べんきょう",
+      "する",
+    ]);
   });
 });

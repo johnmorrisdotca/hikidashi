@@ -23,14 +23,14 @@ const DIGITS = ["〇", "一", "二", "三", "四", "五", "六", "七", "八", "
  * to a figure: 壱 for 一, 弐 for 二, 参 for 三, 拾 for 十. Nothing else changes in modern use, so 四 to
  * 九, 百 and 千 stay as they are. 萬 is the old form of 万 and is read, not written.
  */
-const FORMAL: Record<string, string> = { "一": "壱", "二": "弐", "三": "参", "十": "拾", "〇": "零" };
-const PLAIN_OF_FORMAL: Record<string, string> = { "壱": "一", "弐": "二", "参": "三", "拾": "十", "萬": "万" };
+const FORMAL: Record<string, string> = { 一: "壱", 二: "弐", 三: "参", 十: "拾", 〇: "零" };
+const PLAIN_OF_FORMAL: Record<string, string> = { 壱: "一", 弐: "二", 参: "三", 拾: "十", 萬: "万" };
 
 /** Both zeroes are written; 零 is the formal one and 〇 the everyday one. */
 const ZEROES = new Set(["〇", "零", "0"]);
 
 /** The units below a myriad, which stack inside one group of four digits. */
-const SMALL_UNITS: Record<string, number> = { "十": 10, "百": 100, "千": 1_000 };
+const SMALL_UNITS: Record<string, number> = { 十: 10, 百: 100, 千: 1_000 };
 
 /**
  * The myriad units, largest first.
@@ -173,7 +173,11 @@ function writeBelowMyriad(value: number): string {
   let remaining = value;
   let out = "";
 
-  for (const [kanji, unit] of [["千", 1_000], ["百", 100], ["十", 10]] as const) {
+  for (const [kanji, unit] of [
+    ["千", 1_000],
+    ["百", 100],
+    ["十", 10],
+  ] as const) {
     const count = Math.floor(remaining / unit);
     if (count === 0) continue;
     remaining -= count * unit;
@@ -240,14 +244,14 @@ const DIGIT_READINGS = ["", "いち", "に", "さん", "よん", "ご", "ろく"
 
 /** The sound changes, by unit and by the digit in front of it. */
 const UNIT_READINGS: Record<string, { base: string; irregular: Record<number, string> }> = {
-  "十": { base: "じゅう", irregular: {} },
-  "百": { base: "ひゃく", irregular: { 3: "さんびゃく", 6: "ろっぴゃく", 8: "はっぴゃく" } },
-  "千": { base: "せん", irregular: { 3: "さんぜん", 8: "はっせん" } },
-  "万": { base: "まん", irregular: {} },
-  "億": { base: "おく", irregular: {} },
+  十: { base: "じゅう", irregular: {} },
+  百: { base: "ひゃく", irregular: { 3: "さんびゃく", 6: "ろっぴゃく", 8: "はっぴゃく" } },
+  千: { base: "せん", irregular: { 3: "さんぜん", 8: "はっせん" } },
+  万: { base: "まん", irregular: {} },
+  億: { base: "おく", irregular: {} },
   /* 兆 takes the small tsu after 一 and 八, the way 百 and 千 take theirs. */
-  "兆": { base: "ちょう", irregular: { 1: "いっちょう", 8: "はっちょう", 10: "じゅっちょう" } },
-  "京": { base: "けい", irregular: {} },
+  兆: { base: "ちょう", irregular: { 1: "いっちょう", 8: "はっちょう", 10: "じゅっちょう" } },
+  京: { base: "けい", irregular: {} },
 };
 
 /** One unit with the count in front of it, sound changes applied. */
@@ -266,7 +270,11 @@ function readBelowMyriad(value: number): string {
 
   let remaining = value;
   let out = "";
-  for (const [kanji, unit] of [["千", 1_000], ["百", 100], ["十", 10]] as const) {
+  for (const [kanji, unit] of [
+    ["千", 1_000],
+    ["百", 100],
+    ["十", 10],
+  ] as const) {
     const count = Math.floor(remaining / unit);
     if (count === 0) continue;
     remaining -= count * unit;

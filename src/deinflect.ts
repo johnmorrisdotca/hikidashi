@@ -126,8 +126,10 @@ function godanRules(): Rule[] {
   const rules: Rule[] = [];
   for (const row of GODAN_ROWS) {
     const to = row.dictionary;
-    for (const { ending, accepts } of STEM_ENDINGS) rules.push({ from: `${row.i}${ending}`, to, gives: godan, accepts });
-    for (const { ending, accepts } of NEGATIVE_ENDINGS) rules.push({ from: `${row.a}${ending}`, to, gives: godan, accepts });
+    for (const { ending, accepts } of STEM_ENDINGS)
+      rules.push({ from: `${row.i}${ending}`, to, gives: godan, accepts });
+    for (const { ending, accepts } of NEGATIVE_ENDINGS)
+      rules.push({ from: `${row.a}${ending}`, to, gives: godan, accepts });
     rules.push({ from: `${row.e}ば`, to, gives: godan, accepts: [] });
     /* The potential, 行ける, conjugates as an ichidan verb of its own. */
     rules.push({ from: `${row.e}る`, to, gives: godan, accepts: [ichidan] });
@@ -137,8 +139,10 @@ function godanRules(): Rule[] {
   }
   /* 行く is the one godan verb whose te-form is not the く row's. */
   for (const stem of ["行", "い"]) {
-    for (const { suffix, accepts } of TE_ENDINGS) rules.push({ from: `${stem}って${suffix}`, to: `${stem}く`, gives: godan, accepts });
-    for (const suffix of TA_ENDINGS) rules.push({ from: `${stem}った${suffix}`, to: `${stem}く`, gives: godan, accepts: [] });
+    for (const { suffix, accepts } of TE_ENDINGS)
+      rules.push({ from: `${stem}って${suffix}`, to: `${stem}く`, gives: godan, accepts });
+    for (const suffix of TA_ENDINGS)
+      rules.push({ from: `${stem}った${suffix}`, to: `${stem}く`, gives: godan, accepts: [] });
   }
   return rules;
 }
@@ -299,7 +303,8 @@ export function dictionaryForms(written: string): Deinflection[] {
         const reach = step === 0 ? rule.from.length : outer;
         next.push({ term: base, tag: rule.gives, outer: reach });
         const key = `${rule.gives}:${base}`;
-        if (rule.gives !== TE && !found.has(key)) found.set(key, { base, wordClass: rule.gives, outer: reach, steps: step });
+        if (rule.gives !== TE && !found.has(key))
+          found.set(key, { base, wordClass: rule.gives, outer: reach, steps: step });
       }
     }
     frontier = next;
@@ -341,8 +346,11 @@ const LABELS: Record<WordClass, readonly RegExp[]> = {
  */
 export function wordClassesOf(characters: string, partsOfSpeech: readonly string[]): WordClass[] {
   const parts = partsOfSpeech.map((part) => part.trim().toLowerCase());
-  const classes = (Object.keys(LABELS) as WordClass[]).filter((wordClass) => parts.some((part) => LABELS[wordClass].some((label) => label.test(part))));
-  const spelledAsKuru = /(来る|くる|來る)$/.test(characters) && parts.some((part) => /\bverb$/.test(part) || /^v(1|5|k)/.test(part));
+  const classes = (Object.keys(LABELS) as WordClass[]).filter((wordClass) =>
+    parts.some((part) => LABELS[wordClass].some((label) => label.test(part))),
+  );
+  const spelledAsKuru =
+    /(来る|くる|來る)$/.test(characters) && parts.some((part) => /\bverb$/.test(part) || /^v(1|5|k)/.test(part));
   if (spelledAsKuru && !classes.includes(kuru)) classes.push(kuru);
   return classes;
 }

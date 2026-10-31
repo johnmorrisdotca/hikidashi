@@ -47,12 +47,9 @@ describe("reading a number written in Japanese", () => {
    * Units descend or the text is not a number anybody wrote on purpose.
    * Reading 万億 as something would put a confident wrong answer on the page.
    */
-  it.each(["万億", "十百", "百十百", "一二三", "ねこ", "", "  ", "12kg"])(
-    "refuses %s",
-    (text) => {
-      expect(parseJapaneseNumber(text)).toBeNull();
-    },
-  );
+  it.each(["万億", "十百", "百十百", "一二三", "ねこ", "", "  ", "12kg"])("refuses %s", (text) => {
+    expect(parseJapaneseNumber(text)).toBeNull();
+  });
 
   /* 〇 and 零 are both zero, and a run of digits keeps its place value. */
   it("reads both zeroes", () => {
@@ -80,14 +77,13 @@ describe("writing a number the Japanese way", () => {
   });
 
   /* The two directions have to agree, or one of them is lying. */
-  it.each([1, 8, 15, 24, 99, 100, 305, 1_000, 8_064, 10_000, 90_210, 1_000_000, 120_000_000, 350_000_000, 1_000_000_000_000])(
-    "round-trips %i",
-    (value) => {
-      const written = writeJapaneseNumber(value);
-      expect(written).not.toBeNull();
-      expect(parseJapaneseNumber(written!)).toBe(value);
-    },
-  );
+  it.each([
+    1, 8, 15, 24, 99, 100, 305, 1_000, 8_064, 10_000, 90_210, 1_000_000, 120_000_000, 350_000_000, 1_000_000_000_000,
+  ])("round-trips %i", (value) => {
+    const written = writeJapaneseNumber(value);
+    expect(written).not.toBeNull();
+    expect(parseJapaneseNumber(written!)).toBe(value);
+  });
 
   /* Above the safe range JavaScript answers a digit or two out, which is worse than not answering. */
   it("declines what it cannot write exactly", () => {
@@ -152,7 +148,9 @@ describe("very large numbers", () => {
     const largest = writeJapaneseNumber(LARGEST_JAPANESE_NUMBER)!;
     expect(largest).toBe("九千七兆千九百九十二億五千四百七十四万九百九十一");
     expect(parseJapaneseNumber(largest)).toBe(9_007_199_254_740_991);
-    expect(readJapaneseNumber(LARGEST_JAPANESE_NUMBER)).toBe("きゅうせんななちょうせんきゅうひゃくきゅうじゅうにおくごせんよんひゃくななじゅうよんまんきゅうひゃくきゅうじゅういち");
+    expect(readJapaneseNumber(LARGEST_JAPANESE_NUMBER)).toBe(
+      "きゅうせんななちょうせんきゅうひゃくきゅうじゅうにおくごせんよんひゃくななじゅうよんまんきゅうひゃくきゅうじゅういち",
+    );
   });
 
   it("answers null one past it, in either direction, rather than a number a digit out", () => {
@@ -218,9 +216,12 @@ describe("the formal numerals", () => {
     expect(parseJapaneseNumber("壱億弐千万")).toBe(120_000_000);
   });
 
-  it.each([0, 1, 2, 3, 10, 11, 23, 100, 3_333, 10_000, 20_203, 120_000_000, LARGEST_JAPANESE_NUMBER])("round-trips %i formally", (value) => {
-    expect(parseJapaneseNumber(writeJapaneseNumber(value, { formal: true })!)).toBe(value);
-  });
+  it.each([0, 1, 2, 3, 10, 11, 23, 100, 3_333, 10_000, 20_203, 120_000_000, LARGEST_JAPANESE_NUMBER])(
+    "round-trips %i formally",
+    (value) => {
+      expect(parseJapaneseNumber(writeJapaneseNumber(value, { formal: true })!)).toBe(value);
+    },
+  );
 
   it("is the same as the plain way unless asked", () => {
     expect(writeJapaneseNumber(123, { formal: false })).toBe(writeJapaneseNumber(123));

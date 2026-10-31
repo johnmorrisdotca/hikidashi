@@ -52,7 +52,8 @@ describe("a number written in words", () => {
 
 describe("the edges", () => {
   it("is not fooled by the names every object has", () => {
-    for (const word of ["constructor", "toString", "valueOf", "hasOwnProperty", "__proto__"]) expect(parseEnglishNumber(word), word).toBeNull();
+    for (const word of ["constructor", "toString", "valueOf", "hasOwnProperty", "__proto__"])
+      expect(parseEnglishNumber(word), word).toBeNull();
     expect(parseEnglishNumber("five constructor")).toBeNull();
   });
 

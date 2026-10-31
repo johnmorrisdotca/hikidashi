@@ -83,7 +83,6 @@ describe("a test", () => {
     const [question] = buildKanjiTest([{ word: "食べる", reading: "たべる" }], { seed: 1, count: 12 }).writing;
     expect(question?.segments.map((segment) => segment.kind)).toEqual([KINDS.kanji, KINDS.okurigana]);
   });
-
 });
 
 describe("the words a test is asked", () => {
@@ -102,8 +101,14 @@ describe("the words a test is asked", () => {
   });
 
   it("asks nothing of a count below one, and nothing of an empty list", () => {
-    expect(buildKanjiTest([{ word: "会う", reading: "あう" }], { seed: 1, count: 0 })).toEqual({ writing: [], reading: [] });
-    expect(buildKanjiTest([{ word: "会う", reading: "あう" }], { seed: 1, count: -3 })).toEqual({ writing: [], reading: [] });
+    expect(buildKanjiTest([{ word: "会う", reading: "あう" }], { seed: 1, count: 0 })).toEqual({
+      writing: [],
+      reading: [],
+    });
+    expect(buildKanjiTest([{ word: "会う", reading: "あう" }], { seed: 1, count: -3 })).toEqual({
+      writing: [],
+      reading: [],
+    });
     expect(buildKanjiTest([], { seed: 1, count: 12 })).toEqual({ writing: [], reading: [] });
   });
 });
@@ -123,7 +128,12 @@ describe("the readings a word is refused", () => {
   it("gives the first kanji the shortest share the rest allows", () => {
     expect(segmentWord("会う", "あう")?.[0]?.reading).toBe("あ");
     expect(segmentWord("山川", "やまがわ")).toEqual([{ text: "山川", kind: KINDS.kanji, reading: "やまがわ" }]);
-    expect(segmentWord("見て見る", "みてみる")?.map((segment) => [segment.text, segment.reading])).toEqual([["見", "み"], ["て", "て"], ["見", "み"], ["る", "る"]]);
+    expect(segmentWord("見て見る", "みてみる")?.map((segment) => [segment.text, segment.reading])).toEqual([
+      ["見", "み"],
+      ["て", "て"],
+      ["見", "み"],
+      ["る", "る"],
+    ]);
   });
 
   it("is given a word of several runs and a reading that fits only one way", () => {
