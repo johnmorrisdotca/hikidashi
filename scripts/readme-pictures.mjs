@@ -42,4 +42,50 @@ await takePictures({
     drawer("extract"),
     drawer("difficulty"),
   ],
+  // The family's thumbnail, dark thumbnail and icon (scripts/family-thumbnail.mjs): the package's drawing is its
+  // typography, so the card sets what its own functions write, in the page's own colours: 引き出し with the reading
+  // segmentWord shares out over its kanji, 一億二千万 in kanji, in formal 大字 and read aloud, and 2019's two era
+  // years. The icon is the one bold kanji 引 on the page's felt.
+  thumbnail: {
+    url: "/?lang=en&help=off",
+    ready: READY,
+    target: "#thumbnail-type",
+    icon: { target: "#thumbnail-glyph" },
+    label: "Hikidashi 引き出し",
+    async prepare(page) {
+      await page.evaluate(async () => {
+        const { segmentWord } = await import("./dist/align.js");
+        const { readJapaneseNumber, writeJapaneseNumber } = await import("./dist/numerals.js");
+        const { eraYearsOf, formatEraYearJapanese } = await import("./dist/wareki.js");
+        const font = "'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif";
+        const ruby = (segments) =>
+          segments
+            .map(({ text, reading, kind }) =>
+              kind === "kanji"
+                ? `<ruby>${text}<rt style="color:var(--accent);font-size:0.3em">${reading}</rt></ruby>`
+                : text,
+            )
+            .join("");
+        const word = ruby(segmentWord("引き出し", "ひきだし"));
+        const value = 120000000;
+        const eras = eraYearsOf(2019).map((found) => formatEraYearJapanese(found, { gannen: true }));
+        const line = (size, colour, text) =>
+          `<div style="font-size:${size}px;line-height:1.25;color:${colour};white-space:nowrap">${text}</div>`;
+        const stage = `<div id="thumbnail-type" style="display:flex;align-items:center;gap:56px;padding:16px;width:max-content;font-family:${font};font-weight:700">
+          <div style="font-size:136px;line-height:1.1;color:var(--ink)">${word}</div>
+          <div style="display:grid;gap:10px">
+            ${line(24, "var(--accent)", readJapaneseNumber(value))}
+            ${line(60, "var(--ink)", writeJapaneseNumber(value))}
+            ${line(42, "var(--muted)", writeJapaneseNumber(value, { formal: true }))}
+            ${line(44, "var(--ink)", eras.join("・"))}
+          </div>
+        </div>`;
+        // The icon: the first kanji of the drawer's name, cream on the page's felt, so it keeps its margin at any size.
+        const glyph = `<div id="thumbnail-glyph" style="display:grid;place-items:center;width:440px;height:440px;border-radius:72px;background:var(--felt);color:var(--felt-ink);font-family:${font};font-weight:800;font-size:330px;line-height:1">${segmentWord("引き出し", "ひきだし")[0].text}</div>`;
+        document.body.replaceChildren();
+        document.body.insertAdjacentHTML("beforeend", stage + glyph);
+        await document.fonts.ready;
+      });
+    },
+  },
 });

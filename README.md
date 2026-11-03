@@ -1,3 +1,5 @@
+<p align="center"><a href="https://johnmorrisdotca.github.io/hikidashi/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/thumbnail-dark.png"><img src="https://raw.githubusercontent.com/johnmorrisdotca/hikidashi/main/docs/images/thumbnail.png" alt="Hikidashi: 引き出し with its reading over each kanji, 一億二千万 in kanji, formal kanji and said aloud, and 2019 as 令和元年 and 平成31年." width="1200"></picture></a></p>
+
 <h1 align="center">Hikidashi <sub>引き出し</sub> — Japanese text tools for JavaScript</h1>
 
 <p align="center"><strong>A drawer of small Japanese text tools for JavaScript and TypeScript.</strong><br>
